@@ -1,0 +1,10 @@
+# Stealth Black — replaces the generated [bar] section.
+background       = "#101216"
+background-alpha = 1.0
+text             = "#D7DCE2"
+# Modules calling attention to themselves (recording, alerts, updates, urgent).
+active           = "#D08484"
+scale-with-font  = true
+# 28 logical px at font base-size 12 (Omarchy default is 26).
+size-horizontal  = 28
+size-vertical    = 30

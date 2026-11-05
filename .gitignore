@@ -1,0 +1,14 @@
+# Original wallpapers supplied locally (31 MB, includes third-party images).
+/Backgrounds/
+
+# Resend collection: redistribution terms unclear -> fetched, never committed.
+# Get them with: scripts/fetch-wallpaper.sh --all && scripts/build.sh
+/theme/backgrounds/2-pilulae.jpg
+/theme/backgrounds/3-discus.jpg
+/theme/backgrounds/4-cubus.jpg
+
+# Temporary files from atomic writes
+.tmp.*
+.vscode.*
+.download.*
+__pycache__/

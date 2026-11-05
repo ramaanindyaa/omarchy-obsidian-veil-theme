@@ -1,0 +1,36 @@
+# Stealth Black — Graphite & Silver
+# Omarchy 4.5 canonical palette. Every key below is read by
+# omarchy-theme-color; ANSI color0..15 are derived from these names
+# (color0 = background, color7 = foreground, color8 = muted,
+# color15 = bright_foreground), so no colorN keys are set here.
+
+mode = "dark"
+
+accent = "#A9B4C2"
+selection = "#2A3038"
+muted = "#929AA5"
+
+background = "#101216"
+dark_background = "#0C0E11"
+darker_background = "#08090B"
+lighter_background = "#191C21"
+
+foreground = "#D7DCE2"
+dark_foreground = "#929AA5"
+light_foreground = "#E2E7ED"
+bright_foreground = "#EEF1F5"
+
+red = "#D08484"
+orange = "#C59A7A"
+yellow = "#C3AA7A"
+green = "#91AD95"
+cyan = "#8FAEB2"
+blue = "#92AAC7"
+magenta = "#AE9FBD"
+
+bright_red = "#DDA0A0"
+bright_yellow = "#D4BD91"
+bright_green = "#A8C2AC"
+bright_cyan = "#A6C4C8"
+bright_blue = "#ACC0D9"
+bright_magenta = "#C1B3CE"

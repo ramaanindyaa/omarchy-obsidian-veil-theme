@@ -1,0 +1,7 @@
+# Stealth Black — bar flyouts, dropdowns and OSD on the surface layer.
+background       = "#191C21"
+background-alpha = 1.0
+text             = "#D7DCE2"
+border           = "hyprland.active-border"
+border-alpha     = 1.0
+border-width     = 1

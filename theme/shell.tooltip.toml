@@ -1,0 +1,6 @@
+# Stealth Black — tooltips: solid surface, quiet border.
+background       = "#191C21"
+background-alpha = 1.0
+text             = "#D7DCE2"
+border           = "#30353D"
+border-alpha     = 1.0

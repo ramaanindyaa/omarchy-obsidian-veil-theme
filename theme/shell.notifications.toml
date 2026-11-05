@@ -1,0 +1,8 @@
+# Stealth Black — notifications on the surface layer with a thin silver edge.
+background       = "#191C21"
+background-alpha = 1.0
+text             = "#D7DCE2"
+border           = "hyprland.active-border"
+border-alpha     = 1.0
+border-width     = 1
+countdown        = "#A9B4C2"

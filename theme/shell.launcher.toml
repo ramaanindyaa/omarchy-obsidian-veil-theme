@@ -1,0 +1,13 @@
+# Stealth Black — solid surface card, graphite selection, silver selected text.
+background                = "#191C21"
+background-alpha          = 1.0
+text                      = "#D7DCE2"
+border                    = "#30353D"
+border-alpha              = 1.0
+scrim                     = "#08090B"
+scrim-alpha               = 0.55
+selected-background       = "#2A3038"
+selected-background-alpha = 1.0
+selected-text             = "#EEF1F5"
+selected-border           = "#A9B4C2"
+selected-border-alpha     = 0.35

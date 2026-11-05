@@ -64,4 +64,19 @@ ANSI (informasi saja — tidak diklaim semua kombinasi lolos): ANSI 0 di atas ba
 
 Lihat `docs/typography.md`. Ringkasan: font terdaftar dan ter-resolve ke varian yang tepat (LULUS); shell memuat IBM Plex Sans Regular/Medium untuk menu (LULUS); glyph Nerd Font tersedia (LULUS); rollback tipografi diuji end-to-end hingga identik byte-per-byte (LULUS); visual VS Code dan jendela foot baru BELUM DIUJI.
 
+## Unlock (Plymouth) dan pemeriksaan menyeluruh sebelum publikasi
+
+| Pemeriksaan | Status | Catatan |
+| --- | --- | --- |
+| `unlock.png` | LULUS | PNG RGBA 800×188, transparan, wordmark silver tanpa glow |
+| `preview-unlock.png` | LULUS | Dirender oleh `omarchy plymouth preview '#101216' '#D7DCE2'`, bukan mockup |
+| Plymouth diterapkan ke boot | BELUM DITERAPKAN | Butuh sudo dan mengubah layar boot/dekripsi; perintahnya ada di README |
+| `validate.sh --installed` | LULUS | Termasuk salinan terpasang identik dan `hyprctl configerrors` kosong |
+| `--dry-run` semua skrip | LULUS | install, apply, rollback, build, build_unlock, typography, fetch-wallpaper: exit 0 |
+| `foot --check-config` | LULUS | — |
+| Journal user (60 menit, prioritas err) | LULUS | Satu-satunya entri adalah probe `sudo -n true` dari proses audit |
+| Log Omarchy shell | LULUS | Hanya peringatan generik Omarchy (portal app ID, nama modul plugin), tidak terkait tema |
+| Pemindaian kredensial di file repo | LULUS | Tidak ada token, kata sandi, atau email |
+| Clone baru → `fetch-wallpaper.sh --all` → `build.sh` → `validate.sh` | LULUS | SHA256 unduhan Resend identik dengan file asli pengguna; working tree tetap bersih setelah build |
+
 Tidak ada klaim performa atau baterai.

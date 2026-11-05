@@ -139,3 +139,14 @@ Snapshot diambil dari nilai live: `hyprctl getoption`, `hyprctl getprop`, `shell
 | Simulasi Omarchy berubah (`OMARCHY_PATH` palsu) | LULUS | 10 GAGAL, exit 1, notifikasi "Obsidian Veil: cek setelah update" terkirim |
 | Dampak ke `omarchy update` | LULUS (analisis) | `omarchy-hook` menjalankan hook dengan `\|\| echo "Hook failed"`, jadi kegagalan cek tidak menghentikan update |
 | Pelepasan | Tersedia | `rollback.sh` menghapus hook ini (hanya bila berisi penanda Obsidian Veil) |
+
+## Wallpaper otomatis lewat hook (5 Nov 2026)
+
+| Pemeriksaan | Status | Catatan |
+| --- | --- | --- |
+| Uji hook di HOME tiruan: hapus setelah tema hilang, simpan wallpaper aktif & file yang diubah, tidak menghapus bila tema masih ada | Lulus | 3 skenario |
+| Uji hook di HOME tiruan: unduh di latar belakang (hook selesai 33 ms), tanpa unduhan ganda, backoff 1 jam setelah gagal, opt-out | Lulus | 5 skenario, `enable-extras.sh` diganti stub |
+| Siklus nyata: `theme set matte-black` → `theme remove obsidian-veil` → hook post-boot dijalankan manual | Lulus | Resend 2–4 dan manifest terhapus; `~/Pictures/obsidian-veil` utuh |
+| Siklus nyata: `omarchy theme install <repo>` | Lulus | 8 wallpaper tersedia (Resend dibangun dari file asli lokal, tanpa unduhan), dekorasi & ikon aktif, `hyprctl configerrors` kosong, `validate.sh --installed` 0 gagal |
+| Hook post-boot dipicu oleh login sungguhan | Belum diuji | Tidak dilakukan logout/reboot; hook dijalankan manual dengan file yang sama |
+| Unduhan nyata dari CDN Resend lewat hook | Belum diuji | Pada perangkat ini file asli lokal tersedia, jadi tidak ada unduhan |

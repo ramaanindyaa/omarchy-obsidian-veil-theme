@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Stealth Black typography: minimal, reversible edits to user configs.
+# Obsidian Veil typography: minimal, reversible edits to user configs.
 #   VS Code   ~/.config/Code/User/settings.json   (only the keys below; JSONC kept)
 #   foot      ~/.config/foot/foot.ini             (only the `font=` line)
-# The menu/launcher font (OMARCHY_MENU_FONT) lives in theme/hyprland.lua.
+# The menu/launcher font (OMARCHY_MENU_FONT) lives in extras/hyprland-extras.lua.
 #
 # Usage: typography.sh [--dry-run]            apply
 #        typography.sh --rollback [--dry-run] undo only what this script changed
@@ -71,7 +71,7 @@ apply() {
         fi
       done
       grep -m1 '^font=' "$FOOT_INI" >"$dir/foot-font.orig" || : >"$dir/foot-font.orig"
-      ln -sfn -- "$dir" "$TYPO_BACKUP_LINK"
+      ln -sfn -- "../backups/${dir##*/}" "$TYPO_BACKUP_LINK"
     fi
   fi
 
@@ -157,7 +157,7 @@ rollback() {
   else
     warn "Baris font foot sudah diubah setelah apply; dibiarkan."
   fi
-  log "Font menu/launcher: hapus baris OMARCHY_MENU_FONT di theme/hyprland.lua, lalu install.sh + 'omarchy theme refresh' + 'omarchy restart shell' (atau rollback.sh tema)."
+  log "Font menu/launcher ikut hook tema (extras/hyprland-extras.lua); dilepas oleh rollback.sh."
   log "Paket font (ttf-jetbrains-mono, ttf-ibm-plex) tidak dihapus otomatis."
 }
 

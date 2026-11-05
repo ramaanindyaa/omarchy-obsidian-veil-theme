@@ -1,67 +1,91 @@
 #!/usr/bin/env bash
-# Build generated theme assets inside the project (never in the live theme):
-#   theme/vscode-theme.json  (rendered from Omarchy's own template + overrides)
-#   theme/backgrounds/*      (fill-ready derivatives; originals stay in Backgrounds/)
-# Usage: build.sh [--dry-run]
+# Build generated assets.
+#   (default)            repository files: backgrounds/1-black-ribbons.jpg,
+#                        backgrounds/5-black-dune.png, vscode-theme.json
+#                        (rendered from Omarchy's own template + overrides).
+#                        Development only: needs the local originals.
+#   --user-backgrounds   Resend wallpapers -> ~/.config/omarchy/backgrounds/obsidian-veil/
+#                        (Omarchy's per-theme user background folder; never the repo)
+# Derivatives are at most 3840x2160, no crop for 16:9, no upscaling, no hue
+# changes. AVIF is converted because Omarchy 4.5 only lists
+# jpg/jpeg/png/gif/bmp/webp backgrounds.
+# Usage: build.sh [--user-backgrounds] [--dry-run]
 
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 parse_common_flags "$@"
 need magick
-need python3
-need omarchy-theme-color
 [[ -n ${OMARCHY_PATH:-} ]] || OMARCHY_PATH=/usr/share/omarchy
 
-SRC="$PROJECT_DIR/Backgrounds"
-OUT="$THEME_SRC/backgrounds"
+USER_BG=0
+for a in "$@"; do [[ $a == --user-backgrounds ]] && USER_BG=1; done
+
+LOCAL_SRC="$PROJECT_DIR/Backgrounds"   # originals supplied locally (git-ignored)
+CACHE_SRC="$SB_WALLPAPER_CACHE"        # fetch-wallpaper.sh downloads
 VSCODE_TPL="$OMARCHY_PATH/default/themed/vscode-theme.json.tpl"
 
-# name | candidates "path:op,path:op" (first existing wins; paths relative to Backgrounds/)
-# Derivatives are 3840 px wide at most (panel is 1920x1080 physical, scale 1.25)
-# with no crop for 16:9 sources; AVIF is converted because Omarchy 4.5 only
-# lists jpg/jpeg/png/gif/bmp/webp backgrounds. No upscaling, no hue changes.
-# A fresh clone has no Backgrounds/: committed derivatives are kept as they are,
-# and the Resend ones come from `scripts/fetch-wallpaper.sh --all`.
-declare -a WALLPAPERS=(
-  "1-black-ribbons.jpg|source/black-ribbons-3840.jpg:copy,bg1.avif:convert"
-  "2-pilulae.jpg|bg2.jpg:resize,source/pilulae.jpg:resize"
-  "3-discus.jpg|bg3.jpg:resize,source/discus.jpg:resize"
-  "4-cubus.jpg|bg4.jpg:resize,source/cubus.jpg:resize"
-  "5-black-dune.png|bg5.avif:convert"
-)
+# name | candidates "path:op,..." (absolute paths; first existing wins)
+if (( USER_BG )); then
+  OUT="$USER_BACKGROUNDS"
+  WALLPAPERS=(
+    "2-pilulae.jpg|$LOCAL_SRC/bg2.jpg:resize,$CACHE_SRC/pilulae.jpg:resize"
+    "3-discus.jpg|$LOCAL_SRC/bg3.jpg:resize,$CACHE_SRC/discus.jpg:resize"
+    "4-cubus.jpg|$LOCAL_SRC/bg4.jpg:resize,$CACHE_SRC/cubus.jpg:resize"
+  )
+else
+  OUT="$PROJECT_DIR/backgrounds"
+  WALLPAPERS=(
+    "1-black-ribbons.jpg|$CACHE_SRC/black-ribbons-3840.jpg:copy,$LOCAL_SRC/source/black-ribbons-3840.jpg:copy,$LOCAL_SRC/bg1.avif:convert"
+    "5-black-dune.png|$LOCAL_SRC/bg5.avif:convert"
+  )
+fi
 
 build_wallpaper() {
   local name="$1" cands="$2" dest="$OUT/$1" tmp cand src="" op=""
   IFS=',' read -ra list <<<"$cands"
   for cand in "${list[@]}"; do
-    if [[ -f $SRC/${cand%%:*} ]]; then src="${cand%%:*}"; op="${cand##*:}"; break; fi
+    if [[ -f ${cand%:*} ]]; then src="${cand%:*}"; op="${cand##*:}"; break; fi
   done
   if [[ -z $src ]]; then
     [[ -f $dest ]] || warn "Lewati $name: sumber tidak ada (jalankan scripts/fetch-wallpaper.sh --all)."
     return 0
   fi
-  if [[ -f $dest && $dest -nt $SRC/$src ]]; then
+  if [[ -f $dest && $dest -nt $src ]]; then
     return 0
   fi
   if (( DRY_RUN )); then
     printf '   [dry-run] %s %s -> %s\n' "$op" "$src" "$dest"; return 0
   fi
+  mkdir -p "$OUT"
   tmp="$(mktemp "$OUT/.tmp.XXXXXX").${name##*.}"
   case "$op" in
-    copy)    cp -- "$SRC/$src" "$tmp" ;;
-    resize)  magick "$SRC/$src" -resize '3840x2160>' -strip -quality 92 "$tmp" ;;
-    convert) magick "$SRC/$src[0]" -strip -quality 95 "$tmp" ;;
+    copy)    cp -- "$src" "$tmp" ;;
+    resize)  magick "$src" -resize '3840x2160>' -strip -quality 92 "$tmp" ;;
+    convert) magick "$src[0]" -strip -quality 95 "$tmp" ;;
   esac
   chmod 644 -- "$tmp"
   mv -f -- "$tmp" "$dest"
   rm -f -- "${tmp%.*}"
-  log "wallpaper $name ($(magick identify -format '%wx%h' "$dest"))"
+  log "wallpaper $dest ($(magick identify -format '%wx%h' "$dest"))"
 }
 
-if (( ! DRY_RUN )); then mkdir -p "$OUT"; fi
 for entry in "${WALLPAPERS[@]}"; do
   build_wallpaper "${entry%%|*}" "${entry#*|}"
 done
 
+if (( USER_BG )); then
+  # Record what we generated so rollback.sh removes only untouched files.
+  if (( ! DRY_RUN )) && [[ -d $OUT ]]; then
+    mkdir -p "$SB_STATE_DIR"
+    for entry in "${WALLPAPERS[@]}"; do
+      f="$OUT/${entry%%|*}"
+      if [[ -f $f ]]; then printf '%s  %s\n' "$(sha_of "$f")" "$f"; fi
+    done >"$SB_STATE_DIR/user-backgrounds.sha256"
+  fi
+  exit 0
+fi
+
+need python3
+need omarchy-theme-color
 [[ -f $VSCODE_TPL ]] || die "Template VS Code Omarchy tidak ditemukan: $VSCODE_TPL"
 if (( DRY_RUN )); then
   log "[dry-run] render $VSCODE_TPL -> $THEME_SRC/vscode-theme.json"
@@ -69,8 +93,12 @@ else
   tsv="$(mktemp)"; out="$(mktemp "$THEME_SRC/.vscode.XXXXXX")"
   trap 'rm -f "$tsv" "$out"' EXIT
   omarchy-theme-color --file "$THEME_SRC/colors.toml" --all >"$tsv"
-  python3 -I "$PROJECT_DIR/scripts/build_vscode.py" "$VSCODE_TPL" "$tsv" "$out"
+  python3 -I "$PROJECT_DIR/scripts/build_vscode.py" "$VSCODE_TPL" "$tsv" "$out" 2>/dev/null
   chmod 644 "$out"
-  mv -f -- "$out" "$THEME_SRC/vscode-theme.json"
-  log "vscode-theme.json dirender dari $(basename "$VSCODE_TPL")"
+  if cmp -s "$out" "$THEME_SRC/vscode-theme.json"; then
+    rm -f "$out"
+  else
+    mv -f -- "$out" "$THEME_SRC/vscode-theme.json"
+    log "vscode-theme.json dirender dari $(basename "$VSCODE_TPL")"
+  fi
 fi

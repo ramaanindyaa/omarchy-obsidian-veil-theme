@@ -1,24 +1,30 @@
 # shellcheck shell=bash
-# Shared helpers for Stealth Black scripts. Source, don't execute.
+# Shared helpers for Obsidian Veil scripts. Source, don't execute.
 
 set -Eeuo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
-THEME_SLUG="stealth-black"
-THEME_SRC="$PROJECT_DIR/theme"
+THEME_SLUG="obsidian-veil"
+# The repository root is the Omarchy theme (what `omarchy theme install` clones).
+THEME_SRC="$PROJECT_DIR"
+DEFAULT_REPO_URL="https://github.com/ramaanindyaa/omarchy-obsidian-veil-theme.git"
 
-SB_CONFIG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}"
 SB_STATE_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}"
+SB_CACHE_ROOT="${XDG_CACHE_HOME:-$HOME/.cache}"
 
 # omarchy-theme-set hard-codes these under $HOME (Omarchy 4.5.0); mirror it.
 OMARCHY_USER_THEMES="$HOME/.config/omarchy/themes"
 OMARCHY_CURRENT="$HOME/.local/state/omarchy/current"
+OMARCHY_HOOK_DIR="$HOME/.config/omarchy/hooks/theme-set.d"
 THEME_TARGET="$OMARCHY_USER_THEMES/$THEME_SLUG"
+USER_BACKGROUNDS="$HOME/.config/omarchy/backgrounds/$THEME_SLUG"
+HOOK_NAME="50-obsidian-veil-extras"
+HOOK_TARGET="$OMARCHY_HOOK_DIR/$HOOK_NAME"
 
-SB_STATE_DIR="$SB_STATE_ROOT/stealth-black"
+SB_STATE_DIR="$SB_STATE_ROOT/obsidian-veil"
 SB_BACKUP_ROOT="$SB_STATE_DIR/backups"
-SB_INSTALL_MANIFEST="$SB_STATE_DIR/installed.manifest"
 SB_FIRST_BACKUP_LINK="$SB_STATE_DIR/pre-install"
+SB_WALLPAPER_CACHE="$SB_CACHE_ROOT/obsidian-veil/wallpapers"
 
 VSCODE_SETTINGS="$HOME/.config/Code/User/settings.json"
 
@@ -54,16 +60,18 @@ sha_of() {
   sha256sum -- "$1" | cut -d' ' -f1
 }
 
-# Hash every regular file of a directory tree as "<sha>  <relative path>".
-tree_manifest() {
-  local dir="$1"
-  ( cd "$dir" && find . -type f ! -name '.stealth-black-owned' -print0 | sort -z | xargs -0 -r sha256sum )
-}
-
 current_theme_name() {
   cat "$OMARCHY_CURRENT/theme.name" 2>/dev/null || true
 }
 
 current_background() {
   readlink "$OMARCHY_CURRENT/background" 2>/dev/null || true
+}
+
+# Is $1 an unmodified git clone of this theme (safe for us to remove)?
+clean_theme_clone() {
+  local dir="$1"
+  [[ -d $dir/.git && ! -L $dir ]] || return 1
+  [[ -z $(git -C "$dir" status --porcelain --untracked-files=all 2>/dev/null) ]] || return 1
+  git -C "$dir" ls-files --error-unmatch colors.toml extras/theme-set-hook.sh >/dev/null 2>&1
 }

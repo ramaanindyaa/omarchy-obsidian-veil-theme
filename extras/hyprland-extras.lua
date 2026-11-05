@@ -1,7 +1,11 @@
--- Stealth Black — Hyprland decoration.
--- Loaded by Omarchy as omarchy.current.theme.hyprland, after Omarchy's
--- defaults and before ~/.config/hypr overrides and toggles. Everything here
--- disappears when another theme is applied: no global override.
+-- Obsidian Veil — Hyprland decoration extras.
+-- Omarchy drops *.lua from themes installed with `omarchy theme install`, so
+-- this file is not a theme file. The theme-set hook installed by
+-- scripts/enable-extras.sh appends it to the generated
+-- ~/.local/state/omarchy/current/theme/hyprland.lua (loaded as
+-- omarchy.current.theme.hyprland, after Omarchy's defaults and before
+-- ~/.config/hypr overrides and toggles) whenever obsidian-veil is applied.
+-- Switching to another theme regenerates that file, so nothing here is global.
 -- Layout, gaps, bindings, monitors, input and rules are left untouched.
 
 local active_border_color = "rgb(a9b4c2)"   -- accent

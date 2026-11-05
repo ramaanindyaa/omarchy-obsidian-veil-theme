@@ -1,10 +1,15 @@
-# Stealth Black — Graphite & Silver
+# Obsidian Veil — palette "Stealth Black, Graphite & Silver"
 # Omarchy 4.5 canonical palette. Every key below is read by
 # omarchy-theme-color; ANSI color0..15 are derived from these names
 # (color0 = background, color7 = foreground, color8 = muted,
 # color15 = bright_foreground), so no colorN keys are set here.
 
 mode = "dark"
+
+# Window borders via Omarchy's hyprland.lua template. A theme installed with
+# `omarchy theme install` cannot ship Lua, so the colours live here.
+hyprland_active_border = "#A9B4C2"
+hyprland_inactive_border = "#30353D"
 
 accent = "#A9B4C2"
 selection = "#2A3038"

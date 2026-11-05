@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build theme/unlock.png (Plymouth LUKS unlock / boot logo) and a real preview
+# Build unlock.png (Plymouth LUKS unlock / boot logo) and a real preview
 # rendered by Omarchy's own `omarchy plymouth preview`.
 # Source mark: the Omarchy wordmark shipped with the stock matte-black theme
 # (Omarchy, MIT), recoloured to a brushed-silver ramp: #EEF1F5 -> #A9B4C2 -> #7E8794.

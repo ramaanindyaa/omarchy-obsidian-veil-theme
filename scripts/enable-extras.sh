@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Enable everything `omarchy theme install` cannot deliver on its own.
+# Run once after installing the theme (from the installed clone or any clone):
+#   ~/.config/omarchy/themes/obsidian-veil/scripts/enable-extras.sh --all
+#
+#   --hook        theme-set hook: Hyprland decoration (1 px border, 5 px corners,
+#                 120-180 ms motion, solid terminals) + IBM Plex Sans menu font
+#   --wallpapers  download the Resend wallpapers (not in the repo) into
+#                 ~/.config/omarchy/backgrounds/obsidian-veil/
+#   --typography  VS Code + foot fonts (scripts/typography.sh, backed up)
+#   --all         all of the above (default when no option is given)
+#   --dry-run     show the plan only
+# Nothing here needs sudo. Undo with scripts/rollback.sh.
+
+source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+parse_common_flags "$@"
+
+DO_HOOK=0 DO_WALL=0 DO_TYPO=0
+for a in "$@"; do
+  case "$a" in
+    --hook) DO_HOOK=1 ;;
+    --wallpapers) DO_WALL=1 ;;
+    --typography) DO_TYPO=1 ;;
+    --all) DO_HOOK=1 DO_WALL=1 DO_TYPO=1 ;;
+  esac
+done
+(( DO_HOOK + DO_WALL + DO_TYPO )) || { DO_HOOK=1 DO_WALL=1 DO_TYPO=1; }
+DRYFLAG=(); (( DRY_RUN )) && DRYFLAG=(--dry-run)
+
+if (( DO_HOOK )); then
+  src="$PROJECT_DIR/extras/theme-set-hook.sh"
+  [[ -f $src ]] || die "Hook sumber tidak ada: $src"
+  if [[ -f $HOOK_TARGET ]] && cmp -s "$src" "$HOOK_TARGET"; then
+    log "Hook sudah terpasang: $HOOK_TARGET"
+  elif [[ -e $HOOK_TARGET ]] && ! grep -q 'Obsidian Veil theme-set hook' "$HOOK_TARGET"; then
+    die "$HOOK_TARGET ada tetapi bukan hook Obsidian Veil; tidak ditimpa."
+  else
+    log "Pasang hook -> $HOOK_TARGET"
+    if (( ! DRY_RUN )); then
+      mkdir -p "$OMARCHY_HOOK_DIR"
+      tmp="$(mktemp "$OMARCHY_HOOK_DIR/.ov-hook.XXXXXX")"
+      cp -- "$src" "$tmp"; chmod 755 "$tmp"; mv -f -- "$tmp" "$HOOK_TARGET"
+    fi
+  fi
+fi
+
+if (( DO_WALL )); then
+  "$PROJECT_DIR/scripts/fetch-wallpaper.sh" --resend "${DRYFLAG[@]}"
+  "$PROJECT_DIR/scripts/build.sh" --user-backgrounds "${DRYFLAG[@]}"
+fi
+
+if (( DO_TYPO )); then
+  "$PROJECT_DIR/scripts/typography.sh" "${DRYFLAG[@]}"
+fi
+
+# Re-apply the theme (without changing the wallpaper) so the hook runs now.
+if (( DO_HOOK )) && [[ $(current_theme_name) == "$THEME_SLUG" ]]; then
+  log "omarchy theme refresh"
+  if (( ! DRY_RUN )); then
+    omarchy theme refresh
+  fi
+fi
+log "Selesai."

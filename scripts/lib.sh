@@ -28,6 +28,8 @@ SB_STATE_DIR="$SB_STATE_ROOT/obsidian-veil"
 SB_BACKUP_ROOT="$SB_STATE_DIR/backups"
 SB_FIRST_BACKUP_LINK="$SB_STATE_DIR/pre-install"
 SB_WALLPAPER_CACHE="$SB_CACHE_ROOT/obsidian-veil/wallpapers"
+# Original wallpapers supplied by the user (outside the repo, never committed).
+SB_ORIGINALS_DIR="${SB_ORIGINALS_DIR:-$HOME/Pictures/obsidian-veil}"
 
 VSCODE_SETTINGS="$HOME/.config/Code/User/settings.json"
 

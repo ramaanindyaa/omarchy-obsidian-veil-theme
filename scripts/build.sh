@@ -20,7 +20,7 @@ need magick
 USER_BG=0
 for a in "$@"; do [[ $a == --user-backgrounds ]] && USER_BG=1; done
 
-LOCAL_SRC="$PROJECT_DIR/Backgrounds"   # originals supplied locally (git-ignored)
+LOCAL_SRC="$SB_ORIGINALS_DIR"        # originals supplied by the user (outside the repo)
 CACHE_SRC="$SB_WALLPAPER_CACHE"        # fetch-wallpaper.sh downloads
 VSCODE_TPL="$OMARCHY_PATH/default/themed/vscode-theme.json.tpl"
 

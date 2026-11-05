@@ -71,8 +71,8 @@ fi
 
 if (( DO_WALL )); then
   # Local originals (development copy) make the download unnecessary.
-  if [[ -f $PROJECT_DIR/Backgrounds/bg2.jpg && -f $PROJECT_DIR/Backgrounds/bg3.jpg && -f $PROJECT_DIR/Backgrounds/bg4.jpg ]]; then
-    log "Wallpaper Resend: memakai file lokal di Backgrounds/"
+  if [[ -f $SB_ORIGINALS_DIR/bg2.jpg && -f $SB_ORIGINALS_DIR/bg3.jpg && -f $SB_ORIGINALS_DIR/bg4.jpg ]]; then
+    log "Wallpaper Resend: memakai file lokal di $SB_ORIGINALS_DIR"
   else
     "$PROJECT_DIR/scripts/fetch-wallpaper.sh" --resend "${DRYFLAG[@]}"
   fi

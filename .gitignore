@@ -1,5 +1,5 @@
 # Original wallpapers supplied locally (31 MB, includes third-party images).
-/Backgrounds/
+/Backgrounds/   # legacy location; originals now live in ~/Pictures/obsidian-veil
 
 # Resend collection: redistribution terms unclear -> fetched, never committed.
 # Get them with: scripts/fetch-wallpaper.sh --all && scripts/build.sh

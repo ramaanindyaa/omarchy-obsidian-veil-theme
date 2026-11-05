@@ -56,7 +56,9 @@ scripts/                 install, enable-extras, apply, rollback, validate, buil
 docs/                    device-audit, design, typography, wallpaper-sources, validation
 ```
 
-`Backgrounds/` (berisi wallpaper asli lokal) dan tiga turunan Resend tidak di-commit; lihat `docs/wallpaper-sources.md`.
+Wallpaper asli disimpan di luar repo, di `~/Pictures/obsidian-veil/` (bisa diganti lewat variabel `SB_ORIGINALS_DIR`). Folder itu dan tiga turunan Resend tidak di-commit; lihat `docs/wallpaper-sources.md`.
+
+Menambah wallpaper baru: taruh file asli di `~/Pictures/obsidian-veil/`, tambahkan satu baris di daftar `WALLPAPERS` pada `scripts/build.sh`, lalu jalankan `scripts/build.sh`. Hasilnya masuk ke `backgrounds/`.
 
 ## Ikon folder
 
@@ -119,7 +121,7 @@ Opsi kedua (sudah dipasang di laptop ini) memasang `check-compat.sh` sebagai hoo
 
 Boleh. Setelah tema terpasang, hook, ikon, wallpaper, dan backup tidak bergantung pada folder clone ini. Semua skrip juga ada di `~/.config/omarchy/themes/obsidian-veil/scripts/`, termasuk `rollback.sh`, yang menghapus folder tema paling akhir sehingga aman dijalankan dari sana. Sebelum menghapus, pastikan dua hal:
 - tidak ada perubahan yang belum di-push (`git status`);
-- file pribadi di `Backgrounds/` (tidak di-git) sudah dipindah bila masih diperlukan.
+- file asli wallpaper sudah berada di `~/Pictures/obsidian-veil/`, di luar repo, jadi tidak ikut terhapus.
 
 ## Rollback
 

@@ -1,6 +1,6 @@
 # Sumber wallpaper
 
-Semua file asli disediakan pengguna di `Backgrounds/` dan tidak diubah. Repo GitHub (private) hanya memuat turunan Black Ribbons dan Black Dune (Unsplash License) di `backgrounds/`. Tiga gambar Resend tidak di-commit karena izin redistribusinya tidak jelas. `scripts/enable-extras.sh --wallpapers` mengunduhnya ke `~/.cache/obsidian-veil/wallpapers/` dan membuat turunannya di `~/.config/omarchy/backgrounds/obsidian-veil/`, folder wallpaper per-tema resmi Omarchy. Folder `Backgrounds/` asli tidak di-commit.
+Semua file asli disediakan pengguna di `Backgrounds/` dan tidak diubah. Repo GitHub (private) memuat turunan Black Ribbons dan Black Dune (Unsplash License) serta tiga wallpaper tambahan pengguna (6–8, sumber belum diketahui) di `backgrounds/`. Tiga gambar Resend tidak di-commit karena izin redistribusinya tidak jelas. `scripts/enable-extras.sh --wallpapers` mengunduhnya ke `~/.cache/obsidian-veil/wallpapers/` dan membuat turunannya di `~/.config/omarchy/backgrounds/obsidian-veil/`, folder wallpaper per-tema resmi Omarchy. Folder `Backgrounds/` asli tidak di-commit.
 
 | Tema | Asli (pengguna) | Karya / pembuat | Sumber | Status izin distribusi |
 | --- | --- | --- | --- | --- |
@@ -9,6 +9,9 @@ Semua file asli disediakan pengguna di `Backgrounds/` dan tidak diubah. Repo Git
 | `3-discus.jpg` | `bg3.jpg` 7680×4320 | Discus — Raphael Fagundes untuk Resend | https://cdn.resend.com/wallpapers/2-a.jpg | Sama seperti di atas. |
 | `4-cubus.jpg` | `bg4.jpg` 7680×4320 | Cubus — Raphael Fagundes untuk Resend | https://cdn.resend.com/wallpapers/6-a.jpg | Sama seperti di atas. |
 | `5-black-dune.png` | `bg5.avif` 1400×933 | Black Dune (Unsplash; nama fotografer lihat halaman sumber) | https://unsplash.com/photos/a-black-and-white-photo-of-a-sand-dune-kz63JaDm9V4 | Unsplash License (lihat baris 1). |
+| `6-black-arc.jpg` | `bg6.jpg` 3840×2160 | Lengkung hitam matte (disediakan pengguna, 5 Nov 2026) | Tidak diketahui | Sumber/lisensi belum diketahui → hanya pemakaian pribadi; repo ini private. Hapus dari repo sebelum dijadikan publik. |
+| `7-silver-wave.jpg` | `bg7.jpg` 5120×2880 | Gelombang hitam dengan garis silver (disediakan pengguna, 5 Nov 2026) | Tidak diketahui (metadata: Adobe Photoshop, 25 Jun 2026) | Sama seperti `6-black-arc.jpg`. |
+| `8-graphite-curve.jpg` | `bg8.png` 5120×3200 | Lengkung graphite mengilap (disediakan pengguna, 5 Nov 2026) | Tidak diketahui | Sama seperti `6-black-arc.jpg`. |
 
 Identifikasi file pengguna dilakukan secara visual terhadap daftar kandidat di `CLAUDE.md`. Black Ribbons diverifikasi numerik: versi unduhan vs `bg1.avif` RMSE 0,45% (gambar sama, resolusi lebih tinggi).
 
@@ -27,8 +30,12 @@ Identifikasi file pengguna dilakukan secara visual terhadap daftar kandidat di `
 | bg3.jpg | image/jpeg | 7680×4320 | 12 862 929 | `0c29756276eda471a42b4f7b8aab59aae5cfd96ef10a76a62ec84a637c22daec` |
 | bg4.jpg | image/jpeg | 7680×4320 | 9 795 208 | `67b1963a132e86f5b2fb339fb2d1b1a1bacbc7e379bcbfe807cd7b5654616849` |
 | bg5.avif | image/avif | 1400×933 | 156 095 | `117d97e1f1e90e9edfcf3abe55bb6f5d44bc9b2c2850f90106c1d0306519553b` |
+| bg6.jpg | image/jpeg | 3840×2160 | 117 950 | `9f58ad1dc3e7729e220f332ab5d7429e501a68a0d6f2da9af3c8ea1530049b5d` |
+| bg7.jpg | image/jpeg | 5120×2880 | 4 824 170 | `4827e513b63eb5e1641f4ee46e64f9cd11ca1bae1d7003958b7b2adfc31d5381` |
+| bg8.png | image/png | 5120×3200 | 9 741 273 | `f96106793eb5ced1352465226aa544a908a628d12ff0cd459471e26f3207eee1` |
 
 ## Pengolahan
 
 - 7680×4320 → 3840×2160 (rasio 16:9 sama dengan panel, tanpa crop), JPEG q92, metadata dibuang. Tidak ada perubahan hue/kecerahan, tidak ada logo.
 - AVIF dikonversi ke PNG lossless karena Omarchy 4.5 tidak membaca AVIF. Black Dune tetap 1400×933 (rasio 3:2): Omarchy menampilkannya *cover* sehingga di panel 1920×1080 sisi atas/bawah terpotong dan gambar diperbesar ±1,37× — tidak menambah detail. Ganti dengan sumber beresolusi lebih tinggi bila tersedia.
+- Wallpaper 6–8 (ditambahkan 5 Nov 2026): `bg6.jpg` sudah 3840×2160 → disalin apa adanya. `bg7.jpg` 5120×2880 → 3840×2160 (16:9, tanpa crop). `bg8.png` 5120×3200 (16:10) → JPEG 3456×2160 q92 tanpa crop; di panel 16:9 Omarchy menampilkannya *cover* sehingga sedikit terpotong atas/bawah. Tidak ada perubahan hue/kecerahan.

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Build generated assets.
 #   (default)            repository files: backgrounds/1-black-ribbons.jpg,
-#                        backgrounds/5-black-dune.png, vscode-theme.json
+#                        backgrounds/5-black-dune.png, 6..8 (user-supplied),
+#                        vscode-theme.json
 #                        (rendered from Omarchy's own template + overrides).
 #                        Development only: needs the local originals.
 #   --user-backgrounds   Resend wallpapers -> ~/.config/omarchy/backgrounds/obsidian-veil/
@@ -36,6 +37,9 @@ else
   WALLPAPERS=(
     "1-black-ribbons.jpg|$CACHE_SRC/black-ribbons-3840.jpg:copy,$LOCAL_SRC/source/black-ribbons-3840.jpg:copy,$LOCAL_SRC/bg1.avif:convert"
     "5-black-dune.png|$LOCAL_SRC/bg5.avif:convert"
+    "6-black-arc.jpg|$LOCAL_SRC/bg6.jpg:copy"
+    "7-silver-wave.jpg|$LOCAL_SRC/bg7.jpg:resize"
+    "8-graphite-curve.jpg|$LOCAL_SRC/bg8.png:resize"
   )
 fi
 

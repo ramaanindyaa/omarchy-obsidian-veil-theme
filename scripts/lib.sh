@@ -20,6 +20,8 @@ THEME_TARGET="$OMARCHY_USER_THEMES/$THEME_SLUG"
 USER_BACKGROUNDS="$HOME/.config/omarchy/backgrounds/$THEME_SLUG"
 HOOK_NAME="50-obsidian-veil-extras"
 HOOK_TARGET="$OMARCHY_HOOK_DIR/$HOOK_NAME"
+ICON_THEME_NAME="ObsidianVeil-Graphite"
+ICON_TARGET="${XDG_DATA_HOME:-$HOME/.local/share}/icons/$ICON_THEME_NAME"
 COMPAT_HOOK_TARGET="$HOME/.config/omarchy/hooks/post-update.d/50-obsidian-veil-compat"
 
 SB_STATE_DIR="$SB_STATE_ROOT/obsidian-veil"

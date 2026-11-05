@@ -15,7 +15,7 @@ Perintah pertama memasang tampilan inti dan langsung menerapkannya. Perintah ked
 
 | Opsi | Isi |
 | --- | --- |
-| `--hook` | Hook `theme-set` resmi Omarchy: border 1 px, sudut 5 px, animasi 120–180 ms, terminal & Nautilus solid, font menu IBM Plex Sans |
+| `--hook` | Hook `theme-set` resmi Omarchy: border 1 px, sudut 5 px, animasi 120–180 ms, terminal & Nautilus solid, font menu IBM Plex Sans, ikon folder graphite |
 | `--wallpapers` | Mengunduh Pilulae, Discus, Cubus (Resend) ke `~/.config/omarchy/backgrounds/obsidian-veil/` |
 | `--typography` | Font VS Code & foot (lihat bawah), dengan backup |
 | `--all` | Semuanya (default) |
@@ -56,6 +56,10 @@ docs/                    device-audit, design, typography, wallpaper-sources, va
 ```
 
 `Backgrounds/` (berisi wallpaper asli lokal) dan tiga turunan Resend tidak di-commit; lihat `docs/wallpaper-sources.md`.
+
+## Ikon folder
+
+`icons.theme` berisi `Yaru-sage` sebagai fallback netral, yang selalu ada di Omarchy. `enable-extras.sh --hook` membangun tema ikon lokal **ObsidianVeil-Graphite** di `~/.local/share/icons/` (`scripts/build-icons.sh`). Tema ini dibuat dengan mewarnai ulang 263 ikon aksen Yaru-blue milik sistem (folder, places) ke rentang graphite `#2A3038` → `#C9D0D9`; ikon lain diwarisi dari Yaru. Hook memilih ikon ini hanya selama Obsidian Veil aktif. Saat pindah tema, ikon tema itu yang dipakai. Turunan dari Yaru (CC BY-SA 4.0) dibuat lokal dan tidak di-commit.
 
 ## Memakai
 
@@ -104,17 +108,23 @@ Yang tetap terbawa ke tema lain: font VS Code/foot (pengaturan aplikasi, bukan t
 **Update Omarchy.** `omarchy update` dan migrasinya tidak menghapus tema pengguna, hook, maupun wallpaper pengguna. Beberapa migrasi menjalankan `omarchy theme refresh`, yang memicu hook sehingga fitur dipasang lagi. Risikonya ada pada versi Omarchy berikutnya yang mungkin mengubah titik integrasi (format override shell, variabel font menu, template border, mekanisme hook). Untuk memeriksanya:
 
 ```bash
-~/obsidian-veil/scripts/check-compat.sh                 # read-only, 19 pemeriksaan
-~/obsidian-veil/scripts/enable-extras.sh --update-check   # opsional: jalankan otomatis setelah setiap omarchy update
+~/.config/omarchy/themes/obsidian-veil/scripts/check-compat.sh        # read-only
+~/.config/omarchy/themes/obsidian-veil/scripts/enable-extras.sh --update-check   # opsional: jalankan otomatis setelah setiap omarchy update
 ```
 
 Opsi kedua memasang `check-compat.sh` sebagai hook `post-update`. Hook itu hanya mengirim notifikasi bila ada yang rusak, dan dilepas oleh `rollback.sh`. Bila ada yang GAGAL, tampilan inti biasanya tetap jalan; jalankan `omarchy theme set tokyo-night` bila perlu, lalu perbaiki repo. Bila template VS Code Omarchy berubah, `check-compat.sh` memberi tahu: jalankan `scripts/build.sh`, commit, push, lalu `omarchy theme update`.
 
+## Apakah folder clone (`~/obsidian-veil`) boleh dihapus?
+
+Boleh. Setelah tema terpasang, hook, ikon, wallpaper, dan backup tidak bergantung pada folder clone ini. Semua skrip juga ada di `~/.config/omarchy/themes/obsidian-veil/scripts/`, termasuk `rollback.sh`, yang menghapus folder tema paling akhir sehingga aman dijalankan dari sana. Sebelum menghapus, pastikan dua hal:
+- tidak ada perubahan yang belum di-push (`git status`);
+- file pribadi di `Backgrounds/` (tidak di-git) sudah dipindah bila masih diperlukan.
+
 ## Rollback
 
 ```bash
-~/obsidian-veil/scripts/rollback.sh --dry-run
-~/obsidian-veil/scripts/rollback.sh                 # atau: --to tokyo-night bila tidak ada backup
+~/.config/omarchy/themes/obsidian-veil/scripts/rollback.sh --dry-run
+~/.config/omarchy/themes/obsidian-veil/scripts/rollback.sh                 # atau: --to tokyo-night bila tidak ada backup
 ```
 
 Rollback melakukan langkah berikut:
@@ -131,7 +141,7 @@ Rollback darurat manual: `omarchy theme set tokyo-night`.
 | Oleh | Path |
 | --- | --- |
 | `omarchy theme install` | `~/.config/omarchy/themes/obsidian-veil/` (clone git) |
-| `enable-extras.sh` | `~/.config/omarchy/hooks/theme-set.d/50-obsidian-veil-extras`, `~/.config/omarchy/backgrounds/obsidian-veil/`, `~/.cache/obsidian-veil/wallpapers/` |
+| `enable-extras.sh` | `~/.local/share/icons/ObsidianVeil-Graphite/`, `~/.config/omarchy/hooks/theme-set.d/50-obsidian-veil-extras`, `~/.config/omarchy/backgrounds/obsidian-veil/`, `~/.cache/obsidian-veil/wallpapers/` |
 | `typography.sh` | 7 key font di `~/.config/Code/User/settings.json`, baris `font=` di `~/.config/foot/foot.ini` |
 | skrip proyek | `~/.local/state/obsidian-veil/` (backup mode 700, manifest) |
 | `omarchy theme set` (resmi) | `~/.local/state/omarchy/current/*`, `colorTheme` VS Code + `~/.vscode/extensions/omarchy-theme/`, `~/.claude/themes/omarchy.json`, gsettings, kebijakan warna Brave, tema Obsidian/fcitx5 |

@@ -88,7 +88,29 @@ if [[ -f $manifest ]]; then
   [[ -d $USER_BACKGROUNDS ]] && (( ! DRY_RUN )) && rmdir --ignore-fail-on-non-empty -- "$USER_BACKGROUNDS"
 fi
 
-# 5. Theme clone.
+# 5. Typography (VS Code + foot), surgical.
+if (( ! KEEP_TYPO )) && [[ -e $SB_STATE_DIR/typography/pre-typography ]]; then
+  flags=(--rollback); (( DRY_RUN )) && flags+=(--dry-run)
+  "$PROJECT_DIR/scripts/typography.sh" "${flags[@]}" || warn "Rollback tipografi tidak lengkap."
+fi
+
+# 6. VS Code settings: report differences, never overwrite.
+if [[ -n $BACKUP_DIR && -f $BACKUP_DIR/vscode-settings.json && -f $VSCODE_SETTINGS ]] && (( ! DRY_RUN )); then
+  if cmp -s "$BACKUP_DIR/vscode-settings.json" "$VSCODE_SETTINGS"; then
+    log "VS Code settings.json identik dengan backup."
+  else
+    warn "VS Code settings.json berbeda dari backup (tidak ditimpa):"
+    diff -u "$BACKUP_DIR/vscode-settings.json" "$VSCODE_SETTINGS" >&2 || true
+  fi
+fi
+
+# Graphite icon theme (only our generated copy).
+if [[ -f $ICON_TARGET/.obsidian-veil ]]; then
+  log "Hapus ikon $ICON_TARGET"
+  run rm -rf -- "$ICON_TARGET"
+fi
+
+# 7. Theme clone — last, so this script also works when run from the clone.
 if (( KEEP_FILES )); then
   log "Direktori tema dipertahankan (--keep-theme-files)."
 elif [[ -d $THEME_TARGET && ! -L $THEME_TARGET ]]; then
@@ -104,22 +126,6 @@ elif [[ -d $THEME_TARGET && ! -L $THEME_TARGET ]]; then
     warn "$THEME_TARGET berisi perubahan; dipindah ke $dest, tidak dihapus."
     run mkdir -p "$dest"
     run mv -- "$THEME_TARGET" "$dest/$THEME_SLUG"
-  fi
-fi
-
-# 6. Typography (VS Code + foot), surgical.
-if (( ! KEEP_TYPO )) && [[ -e $SB_STATE_DIR/typography/pre-typography ]]; then
-  flags=(--rollback); (( DRY_RUN )) && flags+=(--dry-run)
-  "$PROJECT_DIR/scripts/typography.sh" "${flags[@]}" || warn "Rollback tipografi tidak lengkap."
-fi
-
-# 7. VS Code settings: report differences, never overwrite.
-if [[ -n $BACKUP_DIR && -f $BACKUP_DIR/vscode-settings.json && -f $VSCODE_SETTINGS ]] && (( ! DRY_RUN )); then
-  if cmp -s "$BACKUP_DIR/vscode-settings.json" "$VSCODE_SETTINGS"; then
-    log "VS Code settings.json identik dengan backup."
-  else
-    warn "VS Code settings.json berbeda dari backup (tidak ditimpa):"
-    diff -u "$BACKUP_DIR/vscode-settings.json" "$VSCODE_SETTINGS" >&2 || true
   fi
 fi
 

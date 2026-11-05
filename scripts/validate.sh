@@ -80,12 +80,21 @@ if (( INSTALLED )); then
   else
     fail "hook $HOOK_NAME tidak terpasang/berbeda (scripts/enable-extras.sh --hook)"
   fi
+  if [[ -f $ICON_TARGET/.obsidian-veil ]]; then
+    pass "ikon $ICON_THEME_NAME terpasang ($(find "$ICON_TARGET" -name '*.png' | wc -l) PNG)"
+    broken="$(find -L "$ICON_TARGET" -type l | wc -l)"
+    (( broken == 0 )) && pass "tidak ada symlink ikon yang rusak" || fail "$broken symlink ikon rusak"
+  else
+    fail "ikon $ICON_THEME_NAME belum dibangun (scripts/enable-extras.sh --hook)"
+  fi
   if [[ -f $COMPAT_HOOK_TARGET ]]; then
     cmp -s "$COMPAT_HOOK_TARGET" "$PROJECT_DIR/scripts/check-compat.sh" && pass "hook post-update (opsional) terpasang" || info "hook post-update berbeda dari scripts/check-compat.sh"
   else
     info "hook post-update opsional tidak terpasang (enable-extras.sh --update-check)"
   fi
   if [[ $(current_theme_name) == "$THEME_SLUG" ]]; then
+    [[ $(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null) == "'$ICON_THEME_NAME'" ]] &&
+      pass "ikon GTK aktif: $ICON_THEME_NAME" || fail "ikon GTK bukan $ICON_THEME_NAME"
     grep -qF -- '-- >>> obsidian-veil extras' "$OMARCHY_CURRENT/theme/hyprland.lua" &&
       pass "extras Lua aktif di current/theme/hyprland.lua" || fail "extras Lua belum aktif"
     if [[ -n ${HYPRLAND_INSTANCE_SIGNATURE:-} ]]; then

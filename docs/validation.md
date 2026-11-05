@@ -111,3 +111,12 @@ Snapshot diambil dari nilai live: `hyprctl getoption`, `hyprctl getprop`, `shell
 | Update Omarchy nyata 4.5.0-2 → 4.5.0-3 (12:20, setelah tema diterapkan 12:14) | LULUS | Tema tetap utuh; `check-compat.sh` 19/19 lulus pada 4.5.0-3 |
 | Migrasi Omarchy (218 file) | LULUS (analisis) | Tidak ada yang menghapus tema, hook, atau wallpaper pengguna; beberapa menjalankan `omarchy-theme-refresh` (memicu hook) |
 | Hook `post-update` otomatis | TIDAK DIPASANG | Pemasangan diblokir pengaman sesi karena membuat otomatisasi persisten tanpa izin eksplisit; tersedia sebagai opt-in `enable-extras.sh --update-check` |
+
+## Ikon folder graphite
+
+| Pemeriksaan | Status | Hasil |
+| --- | --- | --- |
+| `build-icons.sh` | LULUS | 251 PNG + 10 SVG diwarnai ulang, 256 symlink disalin, 0 symlink rusak; idempoten (stamp) |
+| GTK4 `IconTheme.lookup_icon` | LULUS | `folder`, `folder-documents`, `folder-download`, `user-home`, `folder-music`, `folder-pictures`, `folder-videos`, `inode-directory` → ObsidianVeil-Graphite; ikon lain diwarisi Yaru |
+| Ganti tema | LULUS | Tokyo Night → `Yaru-magenta`; kembali → `ObsidianVeil-Graphite`, border 1, Black Ribbons |
+| Visual di Nautilus | BELUM DIUJI langsung | Tidak membuka jendela agar tidak mencuri fokus; pratinjau offline memakai file ikon yang dipilih GTK |

@@ -31,6 +31,14 @@ if ! grep -qF -- "$MARKER" "$CURRENT" 2>/dev/null; then
   mv -f "$tmp" "$CURRENT"
   omarchy-restart-hyprctl >/dev/null 2>&1 || hyprctl reload >/dev/null 2>&1 || true
 fi
+
+# Graphite folder icons (built by scripts/build-icons.sh). Omarchy's GNOME step
+# has already applied icons.theme (Yaru-sage fallback) in this same batch.
+ICONS="${XDG_DATA_HOME:-$HOME/.local/share}/icons/ObsidianVeil-Graphite"
+if [[ -f $ICONS/index.theme && -n ${DBUS_SESSION_BUS_ADDRESS:-} ]] &&
+   [[ $(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null) != "'ObsidianVeil-Graphite'" ]]; then
+  gsettings set org.gnome.desktop.interface icon-theme "ObsidianVeil-Graphite" 2>/dev/null || true
+fi
 exec 7>&-
 
 # The menu/launcher font is read once, when the Omarchy shell starts.

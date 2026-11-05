@@ -32,6 +32,8 @@ for s in bar popups tooltip notifications launcher menu; do
 done
 chk "shell membaca OMARCHY_MENU_FONT"                     grep -q 'OMARCHY_MENU_FONT' "$P/shell/Commons/Style.qml"
 chk "VS Code memakai vscode-theme.json tema"               grep -q 'vscode-theme.json' "$(command -v omarchy-theme-set-vscode)"
+chk "Yaru-blue (sumber ikon graphite) masih ada"          test -f /usr/share/icons/Yaru-blue/index.theme
+chk "Omarchy masih menerapkan icons.theme lewat gsettings"  grep -q 'icons.theme' "$(command -v omarchy-theme-set-gnome)"
 chk "hook Lua extras masih terpasang"                      test -x "$HOME/.config/omarchy/hooks/theme-set.d/50-obsidian-veil-extras"
 chk "tema obsidian-veil masih terpasang"                   test -f "$THEME_DIR/colors.toml"
 
@@ -44,6 +46,7 @@ fi
 
 if [[ $(cat "$STATE/theme.name" 2>/dev/null) == obsidian-veil ]]; then
   (( QUIET )) || echo ":: Sesi aktif (Obsidian Veil)"
+  chk "ikon graphite aktif"                                  test "$(gsettings get org.gnome.desktop.interface icon-theme 2>/dev/null)" = "'ObsidianVeil-Graphite'"
   chk "extras Lua aktif di tema aktif"                      grep -qF -- '-- >>> obsidian-veil extras' "$STATE/theme/hyprland.lua"
   if [[ -n ${HYPRLAND_INSTANCE_SIGNATURE:-} ]] && command -v hyprctl >/dev/null; then
     chk "hyprctl configerrors kosong"                        test -z "$(hyprctl configerrors 2>/dev/null | sed '/^\s*$/d')"
@@ -57,7 +60,7 @@ if (( ${#problems[@]} )); then
     msg="$(printf '• %s\n' "${problems[@]}")"
     omarchy-notification-send -u normal "Obsidian Veil: cek setelah update" \
       "$msg
-Jalankan ~/obsidian-veil/scripts/validate.sh --installed. Darurat: omarchy theme set tokyo-night" >/dev/null 2>&1 ||
+Jalankan ~/.config/omarchy/themes/obsidian-veil/scripts/check-compat.sh. Darurat: omarchy theme set tokyo-night" >/dev/null 2>&1 ||
       notify-send "Obsidian Veil: cek setelah update" "$msg" >/dev/null 2>&1 || true
   fi
   exit 1

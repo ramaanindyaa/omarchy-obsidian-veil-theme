@@ -4,7 +4,8 @@
 #   ~/.config/omarchy/themes/obsidian-veil/scripts/enable-extras.sh --all
 #
 #   --hook        theme-set hook: Hyprland decoration (1 px border, 5 px corners,
-#                 120-180 ms motion, solid terminals) + IBM Plex Sans menu font
+#                 120-180 ms motion, solid terminals), IBM Plex Sans menu font and
+#                 graphite folder icons (scripts/build-icons.sh)
 #   --wallpapers  download the Resend wallpapers (not in the repo) into
 #                 ~/.config/omarchy/backgrounds/obsidian-veil/
 #   --typography  VS Code + foot fonts (scripts/typography.sh, backed up)
@@ -46,6 +47,10 @@ if (( DO_HOOK )); then
       cp -- "$src" "$tmp"; chmod 755 "$tmp"; mv -f -- "$tmp" "$HOOK_TARGET"
     fi
   fi
+fi
+
+if (( DO_HOOK )); then
+  "$PROJECT_DIR/scripts/build-icons.sh" "${DRYFLAG[@]}"
 fi
 
 if (( DO_COMPAT )); then

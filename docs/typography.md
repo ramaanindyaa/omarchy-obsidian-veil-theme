@@ -29,7 +29,7 @@ Omarchy 4.5.0-2 · Hyprland (Lua) · Omarchy shell (Quickshell) · foot 1.28.0 �
 | --- | --- | --- |
 | `~/.config/Code/User/settings.json` | Menyisipkan 7 key setelah `{`: `editor.fontFamily` `'JetBrains Mono', 'JetBrainsMono Nerd Font', monospace`, `editor.fontSize` 14, `editor.lineHeight` 22, `editor.fontWeight` "400", `editor.fontLigatures` false, `terminal.integrated.fontFamily` `'JetBrainsMono Nerd Font'`, `terminal.integrated.fontSize` 14. Key lain, urutan, dan byte akhir file tetap utuh (tanpa round-trip parser JSON) | `~/.local/state/stealth-black/typography/pre-typography/` |
 | `~/.config/foot/foot.ini` | Hanya `font=JetBrainsMono Nerd Font:size=9` → `size=11` | idem |
-| `theme/hyprland.lua` (proyek → tema terpasang) | `hl.env("OMARCHY_MENU_FONT", "IBM Plex Sans")` | dikelola `install.sh` / `rollback.sh` tema |
+| `extras/hyprland-extras.lua` (dimuat hook theme-set) | `hl.env("OMARCHY_MENU_FONT", "IBM Plex Sans")` | dikelola `enable-extras.sh` / `rollback.sh` |
 
 Komponen yang di-reload: `omarchy theme refresh` (tanpa mengganti wallpaper) dan `omarchy restart shell`. VS Code membaca `settings.json` secara langsung. Jendela foot yang sedang berjalan, termasuk sesi Claude Code ini, tetap memakai ukuran lama sampai jendelanya dibuka ulang. Tidak ada editor atau terminal yang ditutup.
 
@@ -61,8 +61,8 @@ Catatan: render offline dibuat dengan ImageMagick, yang tetap menampilkan ligatu
 cd ~/obsidian-veil
 scripts/typography.sh --rollback --dry-run
 scripts/typography.sh --rollback        # VS Code + foot; hanya key/baris yang masih persis milik skrip
-# Font menu: hapus baris hl.env OMARCHY_MENU_FONT di theme/hyprland.lua, lalu:
-scripts/install.sh && omarchy theme refresh && omarchy restart shell
+# Font menu ikut hook tema; rollback.sh menghapus hook. Untuk melepasnya saja:
+#   hapus baris hl.env di extras/hyprland-extras.lua, lalu omarchy theme refresh
 # Paket font (opsional, tidak otomatis):
 #   sudo pacman -R ttf-jetbrains-mono ttf-ibm-plex
 ```

@@ -1,124 +1,128 @@
-# Stealth Black — Graphite & Silver
+# Obsidian Veil — Graphite & Silver
 
-Tema Omarchy pribadi (`stealth-black`): desktop hitam matte berlapis dengan aksen graphite–silver untuk coding di VS Code, foot, Claude Code, dan Codex. Dibuat dan diuji untuk **Omarchy 4.5.0-2** (Hyprland Lua + Omarchy shell). Spesifikasi: `CLAUDE.md`.
+Tema Omarchy pribadi (`obsidian-veil`): desktop hitam matte berlapis dengan aksen graphite–silver untuk coding di VS Code, foot, Claude Code, dan Codex. Paletnya bernama "Stealth Black". Dibuat dan diuji untuk **Omarchy 4.5.0-2** (Hyprland Lua + Omarchy shell). Spesifikasinya ada di `CLAUDE.md`.
+
+## Pasang
+
+### Cara 1 — `omarchy theme install` + extras (semua fitur)
+
+```bash
+omarchy theme install https://github.com/ramaanindyaa/omarchy-obsidian-veil-theme
+~/.config/omarchy/themes/obsidian-veil/scripts/enable-extras.sh --all
+```
+
+Perintah pertama memasang tampilan inti dan langsung menerapkannya. Perintah kedua dijalankan sekali saja dan memasang yang tidak bisa dibawa `omarchy theme install`:
+
+| Opsi | Isi |
+| --- | --- |
+| `--hook` | Hook `theme-set` resmi Omarchy: border 1 px, sudut 5 px, animasi 120–180 ms, terminal & Nautilus solid, font menu IBM Plex Sans |
+| `--wallpapers` | Mengunduh Pilulae, Discus, Cubus (Resend) ke `~/.config/omarchy/backgrounds/obsidian-veil/` |
+| `--typography` | Font VS Code & foot (lihat bawah), dengan backup |
+| `--all` | Semuanya (default) |
+
+Kenapa perlu langkah kedua? Demi keamanan, Omarchy membuang semua `*.lua` dari tema hasil clone git. Karena itu dekorasi Hyprland disimpan di `extras/hyprland-extras.lua`. Hook yang dipasang `enable-extras.sh` menambahkannya ke `hyprland.lua` tema aktif setiap kali Obsidian Veil diterapkan. Saat pindah ke tema lain, file itu dibuat ulang sehingga dekorasi ikut hilang. Catatan: `omarchy theme update` bisa membawa perubahan isi `extras/hyprland-extras.lua` dari repo ini.
+
+### Cara 2 — satu perintah, dengan backup dan rollback otomatis
+
+```bash
+git clone https://github.com/ramaanindyaa/omarchy-obsidian-veil-theme.git ~/obsidian-veil
+~/obsidian-veil/scripts/install.sh            # tambahkan --dry-run untuk melihat rencana
+```
+
+`install.sh` melakukan langkah berikut:
+1. Mencatat tema, wallpaper, dan pengaturan VS Code yang aktif ke `~/.local/state/obsidian-veil/`.
+2. Memasang hook.
+3. Menjalankan `omarchy theme install`.
+4. Menjalankan `enable-extras.sh --wallpapers --typography`.
+5. Memasang Black Ribbons sebagai wallpaper awal.
+6. Memeriksa `hyprctl configerrors`, dan rollback otomatis bila ada error baru.
+
+Opsi: `--local` (clone dari working copy ini), `--url <git-url>`, `--no-extras`.
+
+Repo private: di mesin lain, login GitHub dulu (`gh auth login`) atau jadikan repo public.
 
 ## Struktur
 
 ```text
-Backgrounds/              (tidak di-commit) wallpaper asli lokal + source/ hasil unduhan
-theme/                    isi tema yang dipasang
-  colors.toml             palet kanonik Omarchy
-  hyprland.lua            border, rounding, animasi, opacity terminal (hanya saat tema aktif)
-  shell.*.toml            override section bar/popup/notifikasi/tooltip/launcher/menu
-  vscode-theme.json       dihasilkan build.sh
-  backgrounds/            turunan wallpaper (dihasilkan build.sh; di repo hanya Black Ribbons & Black Dune)
-  unlock.png              logo layar unlock Plymouth (LUKS/boot), dibuat build_unlock.sh
-  preview-unlock.png      render nyata dari `omarchy plymouth preview`
-scripts/                  build, install, apply, rollback, validate, fetch-wallpaper, typography
-docs/                     device-audit, design, wallpaper-sources, validation, typography
+colors.toml              palet kanonik Omarchy (+ warna border Hyprland)
+shell.*.toml             override section bar/popup/notifikasi/tooltip/launcher/menu
+vscode-theme.json        tema VS Code (dirender build.sh dari template Omarchy)
+backgrounds/             Black Ribbons (default) & Black Dune — Unsplash License
+unlock.png               logo layar unlock Plymouth (LUKS/boot)
+preview-unlock.png       render nyata `omarchy plymouth preview`
+extras/                  hyprland-extras.lua + theme-set-hook.sh (lihat Cara 1)
+scripts/                 install, enable-extras, apply, rollback, validate, build, typography, ...
+docs/                    device-audit, design, typography, wallpaper-sources, validation
 ```
 
-## Dari GitHub (clone baru)
+`Backgrounds/` (berisi wallpaper asli lokal) dan tiga turunan Resend tidak di-commit; lihat `docs/wallpaper-sources.md`.
 
-```bash
-git clone https://github.com/ramaanindyaa/omarchy-obsidian-veil-theme.git ~/obsidian-veil
-cd ~/obsidian-veil
-scripts/fetch-wallpaper.sh --all   # Pilulae, Discus, Cubus (Resend) tidak ada di repo
-scripts/build.sh && scripts/validate.sh
-scripts/install.sh && scripts/apply.sh
-```
+## Memakai
 
-Repo ini tidak bisa dipasang dengan `omarchy theme install`. Tema berada di subfolder `theme/`, dan Omarchy membuang `*.lua` dari tema hasil clone git, sehingga dekorasi Hyprland dan font menu akan hilang. Pakai `scripts/install.sh`.
-
-## Pemakaian
-
-```bash
-cd ~/obsidian-veil
-scripts/fetch-wallpaper.sh     # opsional: Black Ribbons 3840px (sudah diunduh)
-scripts/build.sh               # wallpaper turunan + vscode-theme.json
-scripts/validate.sh            # validasi statis
-scripts/install.sh             # backup pre-install + pasang ke ~/.config/omarchy/themes/stealth-black
-scripts/apply.sh               # omarchy theme set stealth-black + cek error
-scripts/validate.sh --installed
-```
-
-Semua skrip yang mengubah sesuatu menerima `--dry-run`. Setelah tema terpasang, tema juga bisa dipilih dari Theme switcher Omarchy sebagai **Stealth Black** (Omarchy menurunkan nama tampilan dari slug; nama "Graphite & Silver" hanya di dokumentasi).
-
-Saat apply, langkah browser Omarchy dapat meminta otorisasi untuk menulis kebijakan warna Brave — sama seperti mengganti tema dari menu. Membatalkannya tidak menggagalkan tema.
-
-### Mengubah tema
-
-Edit `theme/`, lalu `scripts/build.sh && scripts/install.sh && scripts/apply.sh`. Install mendeteksi edit langsung pada salinan terpasang dan membackupnya sebelum menimpa. Setelah upgrade Omarchy, jalankan ulang ketiga perintah agar `vscode-theme.json` dirender dari template terbaru.
-
-### Mengganti wallpaper
-
-- Siklus: `omarchy theme bg next`, atau pilih lewat `omarchy theme bg-switcher`.
-- Tambah tanpa menyentuh proyek: taruh gambar (jpg/png/webp, **bukan** avif) di `~/.config/omarchy/backgrounds/stealth-black/`.
-- Default tema = file pertama menurut nama di `theme/backgrounds/` (`1-black-ribbons.jpg`). Untuk mengubah default, ubah daftar `WALLPAPERS` di `scripts/build.sh`, lalu build/install/apply.
+- Pilih tema: menu Omarchy → Theme → **Obsidian Veil**, atau `omarchy theme set obsidian-veil`, atau `scripts/apply.sh` (dengan cek error).
+- Ganti wallpaper: `omarchy theme bg next` atau `omarchy theme bg-switcher`. Wallpaper tambahan (jpg/png/webp, **bukan** avif) bisa diletakkan di `~/.config/omarchy/backgrounds/obsidian-veil/`.
+- Update dari GitHub: `omarchy theme update`.
+- Validasi: `scripts/validate.sh --installed`.
 
 ### Tipografi
 
-```bash
-scripts/typography.sh --dry-run    # rencana
-scripts/typography.sh              # VS Code (JetBrains Mono 14/22, ligatures off) + foot 11 pt
-scripts/typography.sh --rollback   # kembalikan hanya baris yang dipasang skrip
-```
+| Area | Font | Ukuran |
+| --- | --- | --- |
+| VS Code editor | JetBrains Mono (fallback ikon JetBrainsMono Nerd Font) | 14 px / line height 22, weight 400, ligatures off |
+| VS Code terminal | JetBrainsMono Nerd Font | 14 px |
+| foot (Claude Code, Codex) | JetBrainsMono Nerd Font | 11 pt |
+| Launcher/menu | IBM Plex Sans (Medium untuk judul baris) | default shell |
+| Bar, jam, notifikasi | tetap alias `monospace` / Liberation Sans (keterbatasan shell) | — |
 
-Font menu/launcher (IBM Plex Sans) diatur di `theme/hyprland.lua` dan aktif setelah `omarchy restart shell`. Paket yang dipasang: `ttf-jetbrains-mono`, `ttf-ibm-plex`. Lihat `docs/typography.md`.
+Paket font: `sudo pacman -S --needed ttf-jetbrains-mono ttf-ibm-plex`. `scripts/typography.sh` menolak berjalan bila font belum terpasang. Detail lengkap ada di `docs/typography.md`.
 
 ### Layar unlock (Plymouth)
 
-`theme/unlock.png` berisi wordmark Omarchy (dari tema bawaan matte-black, lisensi MIT) dengan gradasi silver `#EEF1F5` → `#7E8794` tanpa glow. Latarnya `#101216` dan teks/kotak password `#D7DCE2`, diambil otomatis dari `colors.toml`. Pratinjaunya ada di `theme/preview-unlock.png`.
-
-Layar unlock boot **tidak diterapkan otomatis**, karena butuh sudo dan mengubah tampilan boot/dekripsi. Untuk menerapkannya, jalankan di terminal:
+`unlock.png` berisi wordmark Omarchy (dari tema bawaan matte-black, lisensi MIT) dengan gradasi silver `#EEF1F5` → `#7E8794`, tanpa glow. Latarnya `#101216` dan teks/kotak password `#D7DCE2`, diambil dari `colors.toml`. Layar ini **tidak diterapkan otomatis** karena butuh sudo dan mengubah tampilan boot/dekripsi:
 
 ```bash
-omarchy plymouth set by theme stealth-black   # minta password sudo
+omarchy plymouth set by theme obsidian-veil   # terapkan (minta password sudo)
 omarchy plymouth reset                        # kembali ke default Omarchy
 ```
 
-Lock screen sesi (Super+Ctrl+L) adalah komponen lain, yaitu Omarchy shell. Warnanya sudah mengikuti tema lewat section `[lock]`.
+Lock screen sesi adalah komponen lain (Omarchy shell). Warnanya sudah mengikuti tema lewat section `[lock]`.
 
-### Rollback
+## Rollback
 
 ```bash
-scripts/rollback.sh --dry-run   # lihat rencana
-scripts/rollback.sh             # kembali ke tema & wallpaper awal, hapus tema jika tidak diedit
+~/obsidian-veil/scripts/rollback.sh --dry-run
+~/obsidian-veil/scripts/rollback.sh                 # atau: --to tokyo-night bila tidak ada backup
 ```
 
-Bisa dijalankan dari TTY (`Ctrl+Alt+F3`, login, lalu jalankan skrip) bila desktop tidak bisa dipakai. Rollback memanggil `omarchy theme set tokyo-night` (tema awal yang tercatat), yang juga mengembalikan VS Code ke "Tokyo Night", terminal, GTK, Brave, dsb. `settings.json` VS Code tidak pernah ditimpa; jika berbeda dari backup, diff ditampilkan. Backup tidak pernah dihapus.
+Rollback melakukan langkah berikut:
+1. Kembali ke tema dan wallpaper sebelumnya lewat `omarchy theme set`, yang juga mengembalikan VS Code, terminal, GTK, dan Brave.
+2. Menghapus hook, wallpaper Resend yang dibuat, dan clone tema. Masing-masing hanya dihapus bila masih persis seperti saat dipasang; bila sudah berubah, isinya dipindah ke folder backup.
+3. Mengembalikan baris font VS Code dan foot.
+
+`settings.json` VS Code tidak pernah ditimpa. Backup tidak pernah dihapus. Rollback bisa dijalankan dari TTY (`Ctrl+Alt+F3`). Font menu Plex Sans masih bertahan di lingkungan Hyprland sampai login ulang.
 
 Rollback darurat manual: `omarchy theme set tokyo-night`.
 
-## Lokasi
-
-| Apa | Path |
-| --- | --- |
-| Proyek | `~/obsidian-veil` |
-| Tema terpasang | `~/.config/omarchy/themes/stealth-black/` (penanda `.stealth-black-owned`) |
-| Tema aktif (dikelola Omarchy) | `~/.local/state/omarchy/current/theme/` |
-| Backup pre-install | `~/.local/state/stealth-black/pre-install` → `backups/<waktu>-pre-install/` (mode 700) |
-| Manifest instalasi | `~/.local/state/stealth-black/installed.manifest` |
-
 ## File yang disentuh
 
-Langsung oleh skrip proyek: `~/.config/omarchy/themes/stealth-black/`, `~/.local/state/stealth-black/`.
-
-Oleh `omarchy theme set` (mekanisme resmi, dipulihkan saat ganti tema): `~/.local/state/omarchy/current/*`, `~/.local/state/omarchy/theme-backgrounds/*`, `~/.config/Code/User/settings.json` (hanya `workbench.colorTheme`), `~/.vscode/extensions/omarchy-theme/`, `~/.claude/themes/omarchy.json`, gsettings (color-scheme, icon-theme), kebijakan warna Brave di `/etc/brave/policies/managed/color.json`, konfigurasi tema Obsidian/fcitx5.
-
-Oleh `scripts/typography.sh`: 7 key font di `~/.config/Code/User/settings.json` dan baris `font=` di `~/.config/foot/foot.ini` (backup di `~/.local/state/stealth-black/typography/`).
+| Oleh | Path |
+| --- | --- |
+| `omarchy theme install` | `~/.config/omarchy/themes/obsidian-veil/` (clone git) |
+| `enable-extras.sh` | `~/.config/omarchy/hooks/theme-set.d/50-obsidian-veil-extras`, `~/.config/omarchy/backgrounds/obsidian-veil/`, `~/.cache/obsidian-veil/wallpapers/` |
+| `typography.sh` | 7 key font di `~/.config/Code/User/settings.json`, baris `font=` di `~/.config/foot/foot.ini` |
+| skrip proyek | `~/.local/state/obsidian-veil/` (backup mode 700, manifest) |
+| `omarchy theme set` (resmi) | `~/.local/state/omarchy/current/*`, `colorTheme` VS Code + `~/.vscode/extensions/omarchy-theme/`, `~/.claude/themes/omarchy.json`, gsettings, kebijakan warna Brave, tema Obsidian/fcitx5 |
 
 Tidak disentuh: `~/.config/hypr/*`, `~/.config/omarchy/shell.json`, alias `monospace` fontconfig, keybinding, monitor, input, idle/lock.
 
 ## Opsional
 
-- **Claude Code**: palet "Omarchy" sudah ditulis ke `~/.claude/themes/omarchy.json`, tetapi Claude Code masih memakai tema `dark`. Untuk memakai palet tema: pilih `custom:omarchy` lewat `/theme`, atau `omarchy-theme-set-claude --activate`.
-- **Codex** mengikuti warna ANSI terminal (foot) tanpa konfigurasi tambahan.
+- **Claude Code**: palet "Omarchy" sudah tersedia. Untuk memakainya, pilih `custom:omarchy` lewat `/theme` atau jalankan `omarchy-theme-set-claude --activate`.
+- **Codex** mengikuti warna ANSI terminal.
 
 ## Keterbatasan
 
-- Bergantung pada internal Omarchy 4.5 (override `shell.<section>.toml`, `hyprland.lua` tema, path state). Versi lain bisa berbeda; jalankan `validate.sh --installed` setelah upgrade.
-- ANSI slot 0 = background (aturan Omarchy), bukan `#20242B` dari tabel spesifikasi.
-- Black Dune hanya 1400×933 → diperbesar saat cover pada 1920×1080.
-- Belum ada `preview.png` — tidak dibuat preview palsu.
-- Lihat `docs/validation.md` untuk bagian yang belum diuji secara visual.
+- Bergantung pada internal Omarchy 4.5: override `shell.<section>.toml`, `OMARCHY_MENU_FONT`, template `hyprland.lua`, dan path state. Jalankan `scripts/validate.sh --installed` setelah upgrade Omarchy.
+- ANSI slot 0 = background (aturan Omarchy).
+- Black Dune hanya 1400×933, jadi diperbesar saat ditampilkan *cover*.
+- Belum ada `preview.png` untuk theme switcher; tidak dibuat preview palsu.

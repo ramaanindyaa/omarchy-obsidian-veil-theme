@@ -1,8 +1,8 @@
-# Stealth Black — Tema Omarchy Pribadi
+# Obsidian Veil (palet Stealth Black) — Tema Omarchy Pribadi
 
 ## 1. Tujuan dan cara bekerja
 
-Buat dan terapkan tema Omarchy bernama `stealth-black` pada perangkat pengguna. Hasil akhir harus berupa desktop hitam matte berlapis dengan aksen graphite–silver, konsisten untuk coding menggunakan VS Code, terminal, Claude Code, dan Codex.
+Buat dan terapkan tema Omarchy bernama `obsidian-veil` (palet "Stealth Black") pada perangkat pengguna. Hasil akhir harus berupa desktop hitam matte berlapis dengan aksen graphite–silver, konsisten untuk coding menggunakan VS Code, terminal, Claude Code, dan Codex.
 
 Dokumen ini adalah spesifikasi proyek dan panduan implementasi. Semua angka visual merupakan target desain, bukan klaim tentang konfigurasi bawaan. Sesuaikan implementasi dengan versi Omarchy dan aplikasi yang benar-benar terpasang.
 
@@ -20,8 +20,9 @@ Dokumen ini adalah spesifikasi proyek dan panduan implementasi. Semua angka visu
 - OS: Omarchy Linux pada perangkat pengguna; jangan menganggap versi tertentu.
 - Editor utama: VS Code.
 - Kegiatan utama: coding, membaca kode, menjalankan terminal Claude Code/Codex, browser untuk dokumentasi.
-- Nama tema: `stealth-black`.
-- Nama tampilan: `Stealth Black — Graphite & Silver`.
+- Nama tema (slug): `obsidian-veil`. Slug ini diturunkan `omarchy theme install` dari nama repo `omarchy-obsidian-veil-theme` (keputusan 5 November 2026; sebelumnya `stealth-black`).
+- Nama tampilan: `Obsidian Veil` di switcher Omarchy (diturunkan dari slug); nama palet: `Stealth Black — Graphite & Silver`.
+- Repo: https://github.com/ramaanindyaa/omarchy-obsidian-veil-theme (private). Isi tema berada di root repo agar bisa dipasang dengan `omarchy theme install`.
 - Wallpaper default proyek: Black Ribbons karya Andrew Kliatskyi. Ini keputusan default yang dapat diganti; pengguna belum menetapkan pilihan final.
 - Jika pengguna telah menyediakan wallpaper pilihannya dalam proyek, prioritaskan file itu.
 - Desktop harus nyaman untuk bekerja, dengan informasi penting yang tetap jelas.
@@ -199,7 +200,7 @@ Keputusan pengguna (5 November 2026). Target: modern, tenang, tegas; keterbacaan
 | VS Code editor | `JetBrains Mono` Regular (fallback ikon `JetBrainsMono Nerd Font`, lalu `monospace`) | 14 px, line height 22 px, weight 400, ligatures **off** | `~/.config/Code/User/settings.json` (patch key minimal) |
 | VS Code terminal terintegrasi | `JetBrainsMono Nerd Font` | 14 px | idem |
 | Terminal eksternal (foot: Claude Code, Codex) | `JetBrainsMono Nerd Font` Regular | 11 pt (foot menskalakan pt × scale 1.25 ≈ 18 px fisik) | baris `font=` di `~/.config/foot/foot.ini` |
-| Launcher/menu, clipboard, emoji, polkit, reminder | `IBM Plex Sans` Regular; Medium untuk judul baris (bawaan menu) | base-size 12 logical px (tidak diubah) | `hl.env("OMARCHY_MENU_FONT", "IBM Plex Sans")` di `theme/hyprland.lua`, berlaku setelah `omarchy restart shell` |
+| Launcher/menu, clipboard, emoji, polkit, reminder | `IBM Plex Sans` Regular; Medium untuk judul baris (bawaan menu) | base-size 12 logical px (tidak diubah) | `hl.env("OMARCHY_MENU_FONT", "IBM Plex Sans")` di `extras/hyprland-extras.lua` (dimuat oleh hook theme-set), berlaku setelah shell di-restart oleh hook |
 | Bar, jam, judul notifikasi | tetap alias `monospace` = `JetBrainsMono Nerd Font` | base-size 12 | Lihat batasan |
 | Isi notifikasi | `Liberation Sans` (di-hardcode shell Omarchy) | — | Lihat batasan |
 
@@ -220,26 +221,26 @@ Gunakan template Omarchy untuk aplikasi yang benar-benar didukung. Periksa termi
 Gunakan struktur berikut sebagai panduan; kurangi file yang tidak diperlukan dan sesuaikan nama konfigurasi dengan versi lokal:
 
 ```text
-omarchy-stealth-black/
+omarchy-obsidian-veil-theme/      # root repo = direktori tema Omarchy
   CLAUDE.md
   README.md
-  theme/
-    colors.toml
-    backgrounds/                 # hanya aset yang memang layak dibundel
-    preview.png                  # opsional, screenshot nyata setelah valid
-    [override tema bila perlu]
+  colors.toml
+  shell.*.toml
+  vscode-theme.json
+  backgrounds/                    # hanya aset yang layak dibundel (Unsplash)
+  unlock.png                      # logo Plymouth
+  preview-unlock.png              # render nyata omarchy plymouth preview
+  extras/
+    hyprland-extras.lua           # dekorasi Lua (Omarchy membuang *.lua dari tema git)
+    theme-set-hook.sh             # hook resmi yang memuat extras saat tema diterapkan
   scripts/
-    install.sh
-    apply.sh
-    rollback.sh
-    validate.sh
-    fetch-wallpaper.sh
+    install.sh  enable-extras.sh  apply.sh  rollback.sh  validate.sh
+    build.sh  build_unlock.sh  fetch-wallpaper.sh  typography.sh
   docs/
-    device-audit.md
-    design.md
-    wallpaper-sources.md
-    validation.md
+    device-audit.md  design.md  typography.md  wallpaper-sources.md  validation.md
 ```
+
+Jangan menaruh `*.lua`, `alacritty.toml`, `foot.ini`, `ghostty.conf`, `kitty.conf`, atau `vscode.json` di root repo, karena Omarchy membuangnya dari tema yang dipasang lewat git. Taruh logika seperti itu di `extras/` dan aktifkan lewat hook.
 
 Jangan membuat preview palsu lalu menyebutnya screenshot hasil implementasi. Jika belum ada akses screenshot, biarkan preview belum tersedia.
 
@@ -258,7 +259,7 @@ Jangan membuat preview palsu lalu menyebutnya screenshot hasil implementasi. Jik
 1. Bangun file tema di proyek, bukan langsung di target aktif.
 2. Validasi TOML, format aplikasi, serta warna yang dihasilkan.
 3. Pasang ke direktori tema pengguna yang ditemukan. Jangan mengedit tema bawaan atau file milik paket.
-4. Jika target `stealth-black` sudah ada, bandingkan terlebih dahulu dan backup; jangan timpa tema pengguna lain secara diam-diam.
+4. Jika target `obsidian-veil` sudah ada, bandingkan terlebih dahulu dan backup; jangan timpa tema pengguna lain secara diam-diam.
 5. Unduh dan pasang wallpaper pada lokasi yang dipakai versi lokal.
 6. Gunakan CLI theme-set resmi yang tersedia di mesin; periksa help/implementasinya sebelum dipanggil. Jangan hardcode satu bentuk command untuk semua versi.
 7. Reload hanya komponen yang perlu dan hanya melalui cara yang didukung. Jangan `killall` secara luas.
@@ -314,7 +315,7 @@ Catat hasil nyata dalam `docs/validation.md` dengan status lulus/gagal/belum diu
 
 Pekerjaan selesai jika:
 
-- Tema `stealth-black` tersedia lewat mekanisme tema lokal dan bisa diterapkan.
+- Tema `obsidian-veil` tersedia lewat mekanisme tema lokal (`omarchy theme install`) dan bisa diterapkan.
 - Tampilan memenuhi palet, hierarki lapisan, border, dan keterbacaan di atas.
 - Wallpaper default atau pilihan pengguna terpasang dengan attribution yang jelas.
 - VS Code dan terminal konsisten tanpa kehilangan warna semantik.

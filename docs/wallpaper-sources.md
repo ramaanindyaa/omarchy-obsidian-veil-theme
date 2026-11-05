@@ -1,6 +1,6 @@
 # Sumber wallpaper
 
-Semua file asli disediakan pengguna di `Backgrounds/` dan tidak diubah. Turunan untuk tema ada di `theme/backgrounds/` (dibuat oleh `scripts/build.sh`). Repo GitHub (private) hanya memuat turunan Black Ribbons dan Black Dune (Unsplash License). Tiga gambar Resend tidak di-commit (`.gitignore`) karena izin redistribusinya tidak jelas; ambil dengan `scripts/fetch-wallpaper.sh --all`, lalu jalankan `scripts/build.sh`. Folder `Backgrounds/` asli tidak di-commit.
+Semua file asli disediakan pengguna di `Backgrounds/` dan tidak diubah. Repo GitHub (private) hanya memuat turunan Black Ribbons dan Black Dune (Unsplash License) di `backgrounds/`. Tiga gambar Resend tidak di-commit karena izin redistribusinya tidak jelas. `scripts/enable-extras.sh --wallpapers` mengunduhnya ke `~/.cache/obsidian-veil/wallpapers/` dan membuat turunannya di `~/.config/omarchy/backgrounds/obsidian-veil/`, folder wallpaper per-tema resmi Omarchy. Folder `Backgrounds/` asli tidak di-commit.
 
 | Tema | Asli (pengguna) | Karya / pembuat | Sumber | Status izin distribusi |
 | --- | --- | --- | --- | --- |

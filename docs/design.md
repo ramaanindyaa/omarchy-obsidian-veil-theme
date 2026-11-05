@@ -1,4 +1,4 @@
-# Desain — Stealth Black (Graphite & Silver)
+# Desain — Obsidian Veil (palet Stealth Black, Graphite & Silver)
 
 ## Hierarki lapisan
 
@@ -23,9 +23,12 @@ Warna semantik (red/orange/yellow/green/cyan/blue/magenta + varian bright) mengi
 
 ## File override tema
 
+Warna border juga ada di `colors.toml` (`hyprland_active_border`, `hyprland_inactive_border`), sehingga tetap benar walaupun hook belum dipasang.
+
+
 | File | Isi | Cakupan |
 | --- | --- | --- |
-| `hyprland.lua` | border 1 px (aktif accent, tidak aktif border), rounding 5, warna groupbar, `background_color`, animasi 120–180 ms (speed 1.2–1.8 ds), terminal & Nautilus opacity 1.0 | Hanya saat tema aktif; hilang saat ganti tema. Gaps (5/10 → jarak 10 px), layout, binding, monitor, input tidak disentuh. Blur/shadow tetap mati (default). Toggle Glassy tetap bisa menimpa. |
+| `extras/hyprland-extras.lua` (via hook) | border 1 px (aktif accent, tidak aktif border), rounding 5, warna groupbar, `background_color`, animasi 120–180 ms (speed 1.2–1.8 ds), terminal & Nautilus opacity 1.0 | Hanya saat tema aktif: hook `theme-set` menambahkannya ke `current/theme/hyprland.lua`, yang dibuat ulang saat ganti tema. Gaps (5/10 → jarak 10 px), layout, binding, monitor, input tidak disentuh. Blur/shadow tetap mati (default). Toggle Glassy tetap bisa menimpa. |
 | `shell.bar.toml` | bar `#101216`, urgent red, tinggi 28 (default 26) | Section `[bar]` saja |
 | `shell.popups/notifications.toml` | surface, border aktif 1 px | Section terkait |
 | `shell.tooltip.toml` | surface, border `#30353D` | — |
@@ -42,7 +45,7 @@ Tradeoff: file dikirim tema sehingga perubahan template VS Code Omarchy di masa 
 
 ## Font
 
-Ditetapkan di bagian **Tipografi** `CLAUDE.md`, diimplementasikan oleh `scripts/typography.sh` dan `hl.env("OMARCHY_MENU_FONT", …)` di `theme/hyprland.lua`. Ringkasnya: VS Code memakai JetBrains Mono 14/22 tanpa ligature; terminal (foot dan VS Code) memakai JetBrainsMono Nerd Font (foot 11 pt); launcher/menu memakai IBM Plex Sans; bar, jam, dan notifikasi tetap memakai alias `monospace`/Liberation Sans karena keterbatasan shell. Detail dan validasi: `docs/typography.md`.
+Ditetapkan di bagian **Tipografi** `CLAUDE.md`, diimplementasikan oleh `scripts/typography.sh` dan `hl.env("OMARCHY_MENU_FONT", …)` di `extras/hyprland.lua`. Ringkasnya: VS Code memakai JetBrains Mono 14/22 tanpa ligature; terminal (foot dan VS Code) memakai JetBrainsMono Nerd Font (foot 11 pt); launcher/menu memakai IBM Plex Sans; bar, jam, dan notifikasi tetap memakai alias `monospace`/Liberation Sans karena keterbatasan shell. Detail dan validasi: `docs/typography.md`.
 
 ## Yang sengaja tidak diubah
 

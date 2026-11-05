@@ -82,3 +82,15 @@ Lihat `docs/typography.md`. Ringkasan: font terdaftar dan ter-resolve ke varian 
 | Clone baru → `fetch-wallpaper.sh --all` → `build.sh` → `validate.sh` | LULUS | SHA256 unduhan Resend identik dengan file asli pengguna; working tree tetap bersih setelah build |
 
 Tidak ada klaim performa atau baterai.
+
+## Setelah restrukturisasi ke `obsidian-veil` (`omarchy theme install`)
+
+| Pemeriksaan | Status | Catatan |
+| --- | --- | --- |
+| Kesiapan repo untuk `omarchy theme install` | LULUS | `colors.toml` di root, tidak ada `*.lua`/config terminal/`vscode.json` di root, nama repo → slug `obsidian-veil` |
+| `install.sh --local` (clone `file://`) | LULUS | Hook dipasang sebelum theme-set; extras aktif; border 1, rounding 5; opacity foot 1; font menu Plex Sans |
+| Migrasi dari `stealth-black` | LULUS | State/backup dipindah ke `~/.local/state/obsidian-veil` (symlink relatif); direktori lama dihapus setelah hash cocok |
+| Rollback end-to-end (sungguhan) | LULUS | Kembali ke `tokyo-night` + `2-quattro.webp`; hook, clone, wallpaper Resend, font foot, dan key font VS Code terlepas; `settings.json` identik byte-per-byte dengan backup pre-install; `hyprctl configerrors` kosong |
+| Install dari GitHub (`install.sh`, URL origin) | LULUS | Clone dari GitHub, commit = proyek, hook menambahkan extras saat theme-set dari tema lain, Black Ribbons sebagai wallpaper awal |
+| `enable-extras.sh` dari folder tema terpasang (Cara 1) | LULUS | Idempoten; clone tetap bersih (tidak ada file yang ditulis ke dalam repo) |
+| Restart shell oleh hook | BELUM DIUJI langsung | Variabel `OMARCHY_MENU_FONT` sudah ada di lingkungan Hyprland dari sesi sebelumnya, jadi cabang restart tidak terpicu; akan terpicu pada login baru |

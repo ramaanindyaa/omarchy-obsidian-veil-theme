@@ -120,3 +120,12 @@ Snapshot diambil dari nilai live: `hyprctl getoption`, `hyprctl getprop`, `shell
 | GTK4 `IconTheme.lookup_icon` | LULUS | `folder`, `folder-documents`, `folder-download`, `user-home`, `folder-music`, `folder-pictures`, `folder-videos`, `inode-directory` → ObsidianVeil-Graphite; ikon lain diwarisi Yaru |
 | Ganti tema | LULUS | Tokyo Night → `Yaru-magenta`; kembali → `ObsidianVeil-Graphite`, border 1, Black Ribbons |
 | Visual di Nautilus | BELUM DIUJI langsung | Tidak membuka jendela agar tidak mencuri fokus; pratinjau offline memakai file ikon yang dipilih GTK |
+
+## Pratinjau theme switcher (`preview.png`)
+
+| Pemeriksaan | Status | Catatan |
+| --- | --- | --- |
+| Screenshot asli | LULUS | `grim -o eDP-1` setelah memastikan workspace 9 aktif dengan tepat 4 jendela: Neovim + Neo-tree, btop, `ls -la`, Nautilus (Home), dengan layout 2×2 seperti tema bawaan. Jendela ditutup dan fokus dikembalikan sesudahnya |
+| Resolusi | Catatan | 1920×1080 asli; tidak di-upscale ke 2560×1440 |
+| Font terminal | Catatan | 8 pt via `foot -o` khusus pratinjau; pada 11 pt dan 9 pt btop menolak tampil (butuh minimal 80×24 sel). `foot.ini` tidak diubah |
+| Percobaan pertama | GAGAL lalu diulang | Screenshot pertama menangkap workspace lain karena fokus berpindah; skrip pengambilan sekarang memeriksa workspace dan jumlah jendela sebelum `grim` |

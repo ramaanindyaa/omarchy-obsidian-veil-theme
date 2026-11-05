@@ -48,6 +48,7 @@ colors.toml              palet kanonik Omarchy (+ warna border Hyprland)
 shell.*.toml             override section bar/popup/notifikasi/tooltip/launcher/menu
 vscode-theme.json        tema VS Code (dirender build.sh dari template Omarchy)
 backgrounds/             Black Ribbons (default) & Black Dune — Unsplash License
+preview.png              screenshot asli untuk theme switcher (Neovim, btop, terminal, Nautilus)
 unlock.png               logo layar unlock Plymouth (LUKS/boot)
 preview-unlock.png       render nyata `omarchy plymouth preview`
 extras/                  hyprland-extras.lua + theme-set-hook.sh (lihat Cara 1)
@@ -158,4 +159,4 @@ Tidak disentuh: `~/.config/hypr/*`, `~/.config/omarchy/shell.json`, alias `monos
 - Bergantung pada internal Omarchy 4.5: override `shell.<section>.toml`, `OMARCHY_MENU_FONT`, template `hyprland.lua`, dan path state. Jalankan `scripts/validate.sh --installed` setelah upgrade Omarchy.
 - ANSI slot 0 = background (aturan Omarchy).
 - Black Dune hanya 1400×933, jadi diperbesar saat ditampilkan *cover*.
-- Belum ada `preview.png` untuk theme switcher; tidak dibuat preview palsu.
+- `preview.png` adalah screenshot asli 1920×1080 (layar perangkat ini, tanpa upscaling), sementara tema bawaan memakai 2560×1440. Terminal di pratinjau memakai 8 pt agar btop muat di panel seperempat layar; ukuran harian foot tetap 11 pt.

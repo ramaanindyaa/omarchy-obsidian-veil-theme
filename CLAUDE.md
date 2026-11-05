@@ -228,6 +228,7 @@ omarchy-obsidian-veil-theme/      # root repo = direktori tema Omarchy
   shell.*.toml
   vscode-theme.json
   backgrounds/                    # hanya aset yang layak dibundel (Unsplash)
+  preview.png                     # screenshot asli untuk theme switcher (bukan mockup)
   unlock.png                      # logo Plymouth
   preview-unlock.png              # render nyata omarchy plymouth preview
   extras/

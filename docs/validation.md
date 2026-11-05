@@ -129,3 +129,13 @@ Snapshot diambil dari nilai live: `hyprctl getoption`, `hyprctl getprop`, `shell
 | Resolusi | Catatan | 1920×1080 asli; tidak di-upscale ke 2560×1440 |
 | Font terminal | Catatan | 8 pt via `foot -o` khusus pratinjau; pada 11 pt dan 9 pt btop menolak tampil (butuh minimal 80×24 sel). `foot.ini` tidak diubah |
 | Percobaan pertama | GAGAL lalu diulang | Screenshot pertama menangkap workspace lain karena fokus berpindah; skrip pengambilan sekarang memeriksa workspace dan jumlah jendela sebelum `grim` |
+
+## Hook post-update (dipasang atas permintaan pengguna)
+
+| Pemeriksaan | Status | Catatan |
+| --- | --- | --- |
+| Pemasangan | LULUS | `enable-extras.sh --update-check` → `~/.config/omarchy/hooks/post-update.d/50-obsidian-veil-compat`, identik dengan `scripts/check-compat.sh`; hook post-update lain milik pengguna tidak diubah |
+| Kondisi normal | LULUS | Dijalankan seperti `omarchy-hook` (`bash <file>`): tanpa output, tanpa notifikasi, exit 0 |
+| Simulasi Omarchy berubah (`OMARCHY_PATH` palsu) | LULUS | 10 GAGAL, exit 1, notifikasi "Obsidian Veil: cek setelah update" terkirim |
+| Dampak ke `omarchy update` | LULUS (analisis) | `omarchy-hook` menjalankan hook dengan `\|\| echo "Hook failed"`, jadi kegagalan cek tidak menghentikan update |
+| Pelepasan | Tersedia | `rollback.sh` menghapus hook ini (hanya bila berisi penanda Obsidian Veil) |

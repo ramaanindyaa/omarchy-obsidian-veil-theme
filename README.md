@@ -113,7 +113,7 @@ Yang tetap terbawa ke tema lain: font VS Code/foot (pengaturan aplikasi, bukan t
 ~/.config/omarchy/themes/obsidian-veil/scripts/enable-extras.sh --update-check   # opsional: jalankan otomatis setelah setiap omarchy update
 ```
 
-Opsi kedua memasang `check-compat.sh` sebagai hook `post-update`. Hook itu hanya mengirim notifikasi bila ada yang rusak, dan dilepas oleh `rollback.sh`. Bila ada yang GAGAL, tampilan inti biasanya tetap jalan; jalankan `omarchy theme set tokyo-night` bila perlu, lalu perbaiki repo. Bila template VS Code Omarchy berubah, `check-compat.sh` memberi tahu: jalankan `scripts/build.sh`, commit, push, lalu `omarchy theme update`.
+Opsi kedua (sudah dipasang di laptop ini) memasang `check-compat.sh` sebagai hook `post-update`. Hook itu hanya mengirim notifikasi bila ada yang rusak, dan dilepas oleh `rollback.sh`. Bila ada yang GAGAL, tampilan inti biasanya tetap jalan; jalankan `omarchy theme set tokyo-night` bila perlu, lalu perbaiki repo. Bila template VS Code Omarchy berubah, `check-compat.sh` memberi tahu: jalankan `scripts/build.sh`, commit, push, lalu `omarchy theme update`.
 
 ## Apakah folder clone (`~/obsidian-veil`) boleh dihapus?
 

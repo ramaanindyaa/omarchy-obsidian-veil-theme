@@ -9,22 +9,26 @@
 #                 ~/.config/omarchy/backgrounds/obsidian-veil/
 #   --typography  VS Code + foot fonts (scripts/typography.sh, backed up)
 #   --all         all of the above (default when no option is given)
+#   --update-check  opt-in, not part of --all: install scripts/check-compat.sh as
+#                 an Omarchy post-update hook so every `omarchy update` ends with
+#                 a compatibility check (notification only when something broke)
 #   --dry-run     show the plan only
 # Nothing here needs sudo. Undo with scripts/rollback.sh.
 
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 parse_common_flags "$@"
 
-DO_HOOK=0 DO_WALL=0 DO_TYPO=0
+DO_HOOK=0 DO_WALL=0 DO_TYPO=0 DO_COMPAT=0
 for a in "$@"; do
   case "$a" in
     --hook) DO_HOOK=1 ;;
     --wallpapers) DO_WALL=1 ;;
     --typography) DO_TYPO=1 ;;
     --all) DO_HOOK=1 DO_WALL=1 DO_TYPO=1 ;;
+    --update-check) DO_COMPAT=1 ;;
   esac
 done
-(( DO_HOOK + DO_WALL + DO_TYPO )) || { DO_HOOK=1 DO_WALL=1 DO_TYPO=1; }
+(( DO_HOOK + DO_WALL + DO_TYPO + DO_COMPAT )) || { DO_HOOK=1 DO_WALL=1 DO_TYPO=1; }
 DRYFLAG=(); (( DRY_RUN )) && DRYFLAG=(--dry-run)
 
 if (( DO_HOOK )); then
@@ -40,6 +44,22 @@ if (( DO_HOOK )); then
       mkdir -p "$OMARCHY_HOOK_DIR"
       tmp="$(mktemp "$OMARCHY_HOOK_DIR/.ov-hook.XXXXXX")"
       cp -- "$src" "$tmp"; chmod 755 "$tmp"; mv -f -- "$tmp" "$HOOK_TARGET"
+    fi
+  fi
+fi
+
+if (( DO_COMPAT )); then
+  src="$PROJECT_DIR/scripts/check-compat.sh"
+  if [[ -f $COMPAT_HOOK_TARGET ]] && cmp -s "$src" "$COMPAT_HOOK_TARGET"; then
+    log "Hook post-update sudah terpasang: $COMPAT_HOOK_TARGET"
+  elif [[ -e $COMPAT_HOOK_TARGET ]] && ! grep -q 'Obsidian Veil' "$COMPAT_HOOK_TARGET"; then
+    die "$COMPAT_HOOK_TARGET ada tetapi bukan milik Obsidian Veil; tidak ditimpa."
+  else
+    log "Pasang hook post-update -> $COMPAT_HOOK_TARGET"
+    if (( ! DRY_RUN )); then
+      mkdir -p "${COMPAT_HOOK_TARGET%/*}"
+      tmp="$(mktemp "${COMPAT_HOOK_TARGET%/*}/.ov-hook.XXXXXX")"
+      cp -- "$src" "$tmp"; chmod 755 "$tmp"; mv -f -- "$tmp" "$COMPAT_HOOK_TARGET"
     fi
   fi
 fi

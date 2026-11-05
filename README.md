@@ -87,6 +87,29 @@ omarchy plymouth reset                        # kembali ke default Omarchy
 
 Lock screen sesi adalah komponen lain (Omarchy shell). Warnanya sudah mengikuti tema lewat section `[lock]`.
 
+## Ganti tema dan update Omarchy
+
+**Ganti tema.** Dekorasi Obsidian Veil hanya ada selama tema ini aktif:
+
+| Aksi | Hasil (diuji) |
+| --- | --- |
+| Ganti ke tema lain (menu atau `omarchy theme set`) | Border, sudut, animasi, opacity, bar, dan menu kembali ke milik tema itu; VS Code ikut tema itu |
+| Kembali ke Obsidian Veil | Semua fitur muncul lagi otomatis lewat hook; wallpaper terakhir diingat Omarchy |
+| Ganti tema beruntun dengan cepat | Aman: hook menunggu lock `omarchy-theme-set` dan hanya bekerja bila Obsidian Veil masih aktif |
+| `omarchy theme bg next`, `hyprctl reload`, `omarchy theme refresh` | Fitur tetap aktif, tidak dobel |
+| Login ulang / reboot | Fitur tetap aktif (file tema aktif disimpan), font menu terbaca sejak shell mulai |
+
+Yang tetap terbawa ke tema lain: font VS Code/foot (pengaturan aplikasi, bukan tema). Font menu IBM Plex Sans juga bertahan sampai login ulang.
+
+**Update Omarchy.** `omarchy update` dan migrasinya tidak menghapus tema pengguna, hook, maupun wallpaper pengguna. Beberapa migrasi menjalankan `omarchy theme refresh`, yang memicu hook sehingga fitur dipasang lagi. Risikonya ada pada versi Omarchy berikutnya yang mungkin mengubah titik integrasi (format override shell, variabel font menu, template border, mekanisme hook). Untuk memeriksanya:
+
+```bash
+~/obsidian-veil/scripts/check-compat.sh                 # read-only, 19 pemeriksaan
+~/obsidian-veil/scripts/enable-extras.sh --update-check   # opsional: jalankan otomatis setelah setiap omarchy update
+```
+
+Opsi kedua memasang `check-compat.sh` sebagai hook `post-update`. Hook itu hanya mengirim notifikasi bila ada yang rusak, dan dilepas oleh `rollback.sh`. Bila ada yang GAGAL, tampilan inti biasanya tetap jalan; jalankan `omarchy theme set tokyo-night` bila perlu, lalu perbaiki repo. Bila template VS Code Omarchy berubah, `check-compat.sh` memberi tahu: jalankan `scripts/build.sh`, commit, push, lalu `omarchy theme update`.
+
 ## Rollback
 
 ```bash

@@ -80,6 +80,11 @@ if (( INSTALLED )); then
   else
     fail "hook $HOOK_NAME tidak terpasang/berbeda (scripts/enable-extras.sh --hook)"
   fi
+  if [[ -f $COMPAT_HOOK_TARGET ]]; then
+    cmp -s "$COMPAT_HOOK_TARGET" "$PROJECT_DIR/scripts/check-compat.sh" && pass "hook post-update (opsional) terpasang" || info "hook post-update berbeda dari scripts/check-compat.sh"
+  else
+    info "hook post-update opsional tidak terpasang (enable-extras.sh --update-check)"
+  fi
   if [[ $(current_theme_name) == "$THEME_SLUG" ]]; then
     grep -qF -- '-- >>> obsidian-veil extras' "$OMARCHY_CURRENT/theme/hyprland.lua" &&
       pass "extras Lua aktif di current/theme/hyprland.lua" || fail "extras Lua belum aktif"

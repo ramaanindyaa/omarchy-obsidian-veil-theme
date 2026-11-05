@@ -94,3 +94,20 @@ Tidak ada klaim performa atau baterai.
 | Install dari GitHub (`install.sh`, URL origin) | LULUS | Clone dari GitHub, commit = proyek, hook menambahkan extras saat theme-set dari tema lain, Black Ribbons sebagai wallpaper awal |
 | `enable-extras.sh` dari folder tema terpasang (Cara 1) | LULUS | Idempoten; clone tetap bersih (tidak ada file yang ditulis ke dalam repo) |
 | Restart shell oleh hook | BELUM DIUJI langsung | Variabel `OMARCHY_MENU_FONT` sudah ada di lingkungan Hyprland dari sesi sebelumnya, jadi cabang restart tidak terpicu; akan terpicu pada login baru |
+
+## Ganti tema dan update Omarchy (uji detail)
+
+Snapshot diambil dari nilai live: `hyprctl getoption`, `hyprctl getprop`, `shell.toml` aktif, environment proses `quickshell`, `settings.json`, `foot.ini`.
+
+| Skenario | Status | Hasil |
+| --- | --- | --- |
+| Obsidian Veil → Tokyo Night (mode menu, detached) | LULUS | border 2, rounding 0, animasi 3.79, opacity foot 0.985/0.96, bar 26, VS Code "Tokyo Night", tanpa marker extras, configerrors 0 |
+| Tokyo Night → Obsidian Veil | LULUS | border 1, `#A9B4C2`/`#30353D`, rounding 5, animasi 1.80, opacity 1/1, bar 28, menu `#191C21`, VS Code "Omarchy", Black Ribbons diingat |
+| Cepat: Tokyo → Obsidian → Kanagawa (jeda 0,3 dtk) | LULUS (setelah perbaikan) | Kanagawa bersih tanpa extras. Celah awal: Omarchy menjalankan hook milik switch yang sudah tergantikan; hook sekarang mengambil lock `omarchy-theme-set` dan memeriksa `theme.name` |
+| Cepat: Tokyo → Kanagawa → Obsidian | LULUS | Semua fitur Obsidian aktif |
+| `omarchy theme bg next` ×2, `hyprctl reload`, `omarchy theme refresh` | LULUS | Fitur tetap aktif, marker tetap 1 |
+| Hook dipanggil 3× berturut-turut | LULUS (setelah perbaikan) | Bug awal: penanda diawali `--` sehingga dibaca `grep` sebagai opsi dan extras tertempel 4×. Diperbaiki dengan `grep -qF --` |
+| Sandbox hook: tema aktif bukan obsidian / hook untuk tema lain / shell tanpa font env / pemanggilan ulang | LULUS | Tidak ada aksi / tidak ada aksi / reload Hyprland + restart shell / tidak dobel; hasil gabungan `hyprland.lua` lolos `luac -p` |
+| Update Omarchy nyata 4.5.0-2 → 4.5.0-3 (12:20, setelah tema diterapkan 12:14) | LULUS | Tema tetap utuh; `check-compat.sh` 19/19 lulus pada 4.5.0-3 |
+| Migrasi Omarchy (218 file) | LULUS (analisis) | Tidak ada yang menghapus tema, hook, atau wallpaper pengguna; beberapa menjalankan `omarchy-theme-refresh` (memicu hook) |
+| Hook `post-update` otomatis | TIDAK DIPASANG | Pemasangan diblokir pengaman sesi karena membuat otomatisasi persisten tanpa izin eksplisit; tersedia sebagai opt-in `enable-extras.sh --update-check` |

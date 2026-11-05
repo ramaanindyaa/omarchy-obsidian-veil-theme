@@ -68,6 +68,15 @@ if [[ -f $HOOK_TARGET ]]; then
   fi
 fi
 
+if [[ -f $COMPAT_HOOK_TARGET ]]; then
+  if grep -q 'Obsidian Veil' "$COMPAT_HOOK_TARGET"; then
+    log "Hapus hook $COMPAT_HOOK_TARGET"
+    run rm -f -- "$COMPAT_HOOK_TARGET"
+  else
+    warn "$COMPAT_HOOK_TARGET bukan milik Obsidian Veil; dibiarkan."
+  fi
+fi
+
 # 4. Generated user wallpapers: remove only files whose hash we recorded.
 manifest="$SB_STATE_DIR/user-backgrounds.sha256"
 if [[ -f $manifest ]]; then

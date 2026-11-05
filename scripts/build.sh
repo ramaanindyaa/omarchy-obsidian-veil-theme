@@ -101,4 +101,6 @@ else
     mv -f -- "$out" "$THEME_SRC/vscode-theme.json"
     log "vscode-theme.json dirender dari $(basename "$VSCODE_TPL")"
   fi
+  # Lets check-compat.sh notice when Omarchy changes the VS Code template.
+  printf 'vscode-theme.json.tpl=%s\n' "$(sha_of "$VSCODE_TPL")" >"$PROJECT_DIR/extras/omarchy-compat.sha256"
 fi

@@ -7,7 +7,9 @@
 #                 120-180 ms motion, solid terminals), IBM Plex Sans menu font and
 #                 graphite folder icons (scripts/build-icons.sh)
 #   --wallpapers  download the Resend wallpapers (not in the repo) into
-#                 ~/.config/omarchy/backgrounds/obsidian-veil/
+#                 ~/.config/omarchy/backgrounds/obsidian-veil/ (once the hook is
+#                 installed it also does this automatically on theme set and
+#                 removes them after `omarchy theme remove`)
 #   --typography  VS Code + foot fonts (scripts/typography.sh, backed up)
 #   --all         all of the above (default when no option is given)
 #   --update-check  opt-in, not part of --all: install scripts/check-compat.sh as
@@ -45,6 +47,22 @@ if (( DO_HOOK )); then
       mkdir -p "$OMARCHY_HOOK_DIR"
       tmp="$(mktemp "$OMARCHY_HOOK_DIR/.ov-hook.XXXXXX")"
       cp -- "$src" "$tmp"; chmod 755 "$tmp"; mv -f -- "$tmp" "$HOOK_TARGET"
+    fi
+  fi
+fi
+
+if (( DO_HOOK )); then
+  src="$PROJECT_DIR/extras/theme-set-hook.sh"
+  if [[ -f $POSTBOOT_HOOK_TARGET ]] && cmp -s "$src" "$POSTBOOT_HOOK_TARGET"; then
+    log "Hook post-boot sudah terpasang: $POSTBOOT_HOOK_TARGET"
+  elif [[ -e $POSTBOOT_HOOK_TARGET ]] && ! grep -q 'Obsidian Veil theme-set hook' "$POSTBOOT_HOOK_TARGET"; then
+    die "$POSTBOOT_HOOK_TARGET ada tetapi bukan hook Obsidian Veil; tidak ditimpa."
+  else
+    log "Pasang hook post-boot (bersihkan wallpaper setelah tema dihapus) -> $POSTBOOT_HOOK_TARGET"
+    if (( ! DRY_RUN )); then
+      mkdir -p "${POSTBOOT_HOOK_TARGET%/*}"
+      tmp="$(mktemp "${POSTBOOT_HOOK_TARGET%/*}/.ov-hook.XXXXXX")"
+      cp -- "$src" "$tmp"; chmod 755 "$tmp"; mv -f -- "$tmp" "$POSTBOOT_HOOK_TARGET"
     fi
   fi
 fi

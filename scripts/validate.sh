@@ -80,6 +80,11 @@ if (( INSTALLED )); then
   else
     fail "hook $HOOK_NAME tidak terpasang/berbeda (scripts/enable-extras.sh --hook)"
   fi
+  if [[ -f $POSTBOOT_HOOK_TARGET ]] && cmp -s "$POSTBOOT_HOOK_TARGET" "$PROJECT_DIR/extras/theme-set-hook.sh"; then
+    pass "hook post-boot ${POSTBOOT_HOOK_TARGET##*/} terpasang"
+  else
+    fail "hook post-boot ${POSTBOOT_HOOK_TARGET##*/} tidak terpasang/berbeda (scripts/enable-extras.sh --hook)"
+  fi
   if [[ -f $ICON_TARGET/.obsidian-veil ]]; then
     pass "ikon $ICON_THEME_NAME terpasang ($(find "$ICON_TARGET" -name '*.png' | wc -l) PNG)"
     broken="$(find -L "$ICON_TARGET" -type l | wc -l)"

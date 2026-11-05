@@ -23,6 +23,8 @@ HOOK_TARGET="$OMARCHY_HOOK_DIR/$HOOK_NAME"
 ICON_THEME_NAME="ObsidianVeil-Graphite"
 ICON_TARGET="${XDG_DATA_HOME:-$HOME/.local/share}/icons/$ICON_THEME_NAME"
 COMPAT_HOOK_TARGET="$HOME/.config/omarchy/hooks/post-update.d/50-obsidian-veil-compat"
+# Same file as HOOK_TARGET; cleans up Resend wallpapers after `omarchy theme remove`.
+POSTBOOT_HOOK_TARGET="$HOME/.config/omarchy/hooks/post-boot.d/50-obsidian-veil-cleanup"
 
 SB_STATE_DIR="$SB_STATE_ROOT/obsidian-veil"
 SB_BACKUP_ROOT="$SB_STATE_DIR/backups"

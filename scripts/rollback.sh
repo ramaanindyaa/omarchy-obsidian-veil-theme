@@ -68,6 +68,15 @@ if [[ -f $HOOK_TARGET ]]; then
   fi
 fi
 
+if [[ -f $POSTBOOT_HOOK_TARGET ]]; then
+  if grep -q 'Obsidian Veil theme-set hook' "$POSTBOOT_HOOK_TARGET"; then
+    log "Hapus hook $POSTBOOT_HOOK_TARGET"
+    run rm -f -- "$POSTBOOT_HOOK_TARGET"
+  else
+    warn "$POSTBOOT_HOOK_TARGET bukan hook Obsidian Veil; dibiarkan."
+  fi
+fi
+
 if [[ -f $COMPAT_HOOK_TARGET ]]; then
   if grep -q 'Obsidian Veil' "$COMPAT_HOOK_TARGET"; then
     log "Hapus hook $COMPAT_HOOK_TARGET"

@@ -20,6 +20,19 @@ Perintah pertama memasang tampilan inti dan langsung menerapkannya. Perintah ked
 | `--typography` | Font VS Code & foot (lihat bawah), dengan backup |
 | `--all` | Semuanya (default) |
 
+### Wallpaper otomatis saat install/uninstall
+
+Setelah hook terpasang (`--hook`, cukup sekali per perangkat), wallpaper ikut tema tanpa langkah tambahan:
+
+| Wallpaper | Saat `omarchy theme install` / `theme set obsidian-veil` | Saat `omarchy theme remove obsidian-veil` |
+| --- | --- | --- |
+| 1, 5–8 (di repo) | ikut ter-clone | ikut terhapus bersama folder tema |
+| 2–4 Resend (tidak di repo) | hook mengunduh dan membangunnya di latar belakang bila belum ada (memakai file asli di `~/Pictures/obsidian-veil/` bila tersedia); bila gagal, dicoba lagi paling cepat 1 jam kemudian pada `theme set` berikutnya | dihapus oleh hook pada pergantian tema berikutnya atau saat login berikutnya (hook post-boot `50-obsidian-veil-cleanup`), karena `omarchy theme remove` tidak punya hook sendiri |
+
+Yang dihapus hanya file yang dibuat proyek dan belum kamu ubah. Wallpaper yang sedang tampil tidak dihapus sampai kamu menggantinya. File asli di `~/Pictures/obsidian-veil/` tidak pernah disentuh. Log unduhan: `~/.local/state/obsidian-veil/auto-wallpapers.log`. Untuk mematikan unduhan otomatis: `touch ~/.local/state/obsidian-veil/no-auto-wallpapers`.
+
+Di perangkat baru, hook belum ada sampai `enable-extras.sh` dijalankan sekali; `omarchy theme install` sendiri tidak bisa memasang hook.
+
 Kenapa perlu langkah kedua? Demi keamanan, Omarchy membuang semua `*.lua` dari tema hasil clone git. Karena itu dekorasi Hyprland disimpan di `extras/hyprland-extras.lua`. Hook yang dipasang `enable-extras.sh` menambahkannya ke `hyprland.lua` tema aktif setiap kali Obsidian Veil diterapkan. Saat pindah ke tema lain, file itu dibuat ulang sehingga dekorasi ikut hilang. Catatan: `omarchy theme update` bisa membawa perubahan isi `extras/hyprland-extras.lua` dari repo ini.
 
 ### Cara 2 — satu perintah, dengan backup dan rollback otomatis

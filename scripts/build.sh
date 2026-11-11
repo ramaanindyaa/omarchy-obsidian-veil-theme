@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Build generated assets.
 #   (default)            repository files: backgrounds/1-black-ribbons.jpg,
-#                        backgrounds/5-black-dune.png, 6..8 (user-supplied),
-#                        vscode-theme.json
+#                        backgrounds/5-black-dune.png, vscode-theme.json
 #                        (rendered from Omarchy's own template + overrides).
 #                        Development only: needs the local originals.
-#   --user-backgrounds   Resend wallpapers -> ~/.config/omarchy/backgrounds/obsidian-veil/
+#   --user-backgrounds   Resend wallpapers + local-only 6..8 ->
+#                        ~/.config/omarchy/backgrounds/obsidian-veil/
 #                        (Omarchy's per-theme user background folder; never the repo)
 # Derivatives are at most 3840x2160, no crop for 16:9, no upscaling, no hue
 # changes. AVIF is converted because Omarchy 4.5 only lists
@@ -31,15 +31,17 @@ if (( USER_BG )); then
     "2-pilulae.jpg|$LOCAL_SRC/bg2.jpg:resize,$CACHE_SRC/pilulae.jpg:resize"
     "3-discus.jpg|$LOCAL_SRC/bg3.jpg:resize,$CACHE_SRC/discus.jpg:resize"
     "4-cubus.jpg|$LOCAL_SRC/bg4.jpg:resize,$CACHE_SRC/cubus.jpg:resize"
+    # Source/license unknown: never in the repo, built only where the
+    # originals exist locally (skipped silently elsewhere).
+    "6-black-arc.jpg|$LOCAL_SRC/bg6.jpg:copy"
+    "7-silver-wave.jpg|$LOCAL_SRC/bg7.jpg:resize"
+    "8-graphite-curve.jpg|$LOCAL_SRC/bg8.png:resize"
   )
 else
   OUT="$PROJECT_DIR/backgrounds"
   WALLPAPERS=(
     "1-black-ribbons.jpg|$CACHE_SRC/black-ribbons-3840.jpg:copy,$LOCAL_SRC/source/black-ribbons-3840.jpg:copy,$LOCAL_SRC/bg1.avif:convert"
     "5-black-dune.png|$LOCAL_SRC/bg5.avif:convert"
-    "6-black-arc.jpg|$LOCAL_SRC/bg6.jpg:copy"
-    "7-silver-wave.jpg|$LOCAL_SRC/bg7.jpg:resize"
-    "8-graphite-curve.jpg|$LOCAL_SRC/bg8.png:resize"
   )
 fi
 
@@ -50,7 +52,7 @@ build_wallpaper() {
     if [[ -f ${cand%:*} ]]; then src="${cand%:*}"; op="${cand##*:}"; break; fi
   done
   if [[ -z $src ]]; then
-    [[ -f $dest ]] || warn "Lewati $name: sumber tidak ada (jalankan scripts/fetch-wallpaper.sh --all)."
+    [[ -f $dest || $cands != *"$CACHE_SRC"* ]] || warn "Lewati $name: sumber tidak ada (jalankan scripts/fetch-wallpaper.sh --all)."
     return 0
   fi
   if [[ -f $dest && $dest -nt $src ]]; then

@@ -1,6 +1,6 @@
 # Sumber wallpaper
 
-Semua file asli disediakan pengguna dan disimpan di luar repo di `~/Pictures/obsidian-veil/` (sebelumnya `Backgrounds/` di repo; dipindah 5 Nov 2026) dan tidak diubah. Repo GitHub (private) memuat turunan Black Ribbons dan Black Dune (Unsplash License) serta tiga wallpaper tambahan pengguna (6–8, sumber belum diketahui) di `backgrounds/`. Tiga gambar Resend tidak di-commit karena izin redistribusinya tidak jelas. `scripts/enable-extras.sh --wallpapers` mengunduhnya ke `~/.cache/obsidian-veil/wallpapers/` dan membuat turunannya di `~/.config/omarchy/backgrounds/obsidian-veil/`, folder wallpaper per-tema resmi Omarchy. Folder file asli tidak di-commit.
+Semua file asli disediakan pengguna dan disimpan di luar repo di `~/Pictures/obsidian-veil/` (sebelumnya `Backgrounds/` di repo; dipindah 5 Nov 2026) dan tidak diubah. Repo GitHub (public sejak 11 Nov 2026) hanya memuat turunan Black Ribbons dan Black Dune (Unsplash License) di `backgrounds/`. Wallpaper 6–8 (sumber belum diketahui) dikeluarkan dari repo dan dari seluruh riwayat git sebelum repo dibuka; `scripts/build.sh --user-backgrounds` membangunnya ke folder wallpaper per-tema hanya di perangkat yang punya file aslinya. Tiga gambar Resend tidak di-commit karena izin redistribusinya tidak jelas. `scripts/enable-extras.sh --wallpapers` mengunduhnya ke `~/.cache/obsidian-veil/wallpapers/` dan membuat turunannya di `~/.config/omarchy/backgrounds/obsidian-veil/`, folder wallpaper per-tema resmi Omarchy. Folder file asli tidak di-commit.
 
 | Tema | Asli (pengguna) | Karya / pembuat | Sumber | Status izin distribusi |
 | --- | --- | --- | --- | --- |
@@ -9,7 +9,7 @@ Semua file asli disediakan pengguna dan disimpan di luar repo di `~/Pictures/obs
 | `3-discus.jpg` | `bg3.jpg` 7680×4320 | Discus — Raphael Fagundes untuk Resend | https://cdn.resend.com/wallpapers/2-a.jpg | Sama seperti di atas. |
 | `4-cubus.jpg` | `bg4.jpg` 7680×4320 | Cubus — Raphael Fagundes untuk Resend | https://cdn.resend.com/wallpapers/6-a.jpg | Sama seperti di atas. |
 | `5-black-dune.png` | `bg5.avif` 1400×933 | Black Dune (Unsplash; nama fotografer lihat halaman sumber) | https://unsplash.com/photos/a-black-and-white-photo-of-a-sand-dune-kz63JaDm9V4 | Unsplash License (lihat baris 1). |
-| `6-black-arc.jpg` | `bg6.jpg` 3840×2160 | Lengkung hitam matte (disediakan pengguna, 5 Nov 2026) | Tidak diketahui | Sumber/lisensi belum diketahui → hanya pemakaian pribadi; repo ini private. Hapus dari repo sebelum dijadikan publik. |
+| `6-black-arc.jpg` | `bg6.jpg` 3840×2160 | Lengkung hitam matte (disediakan pengguna, 5 Nov 2026) | Tidak diketahui | Sumber/lisensi belum diketahui → hanya pemakaian pribadi; tidak ada di repo, hanya lokal di `~/.config/omarchy/backgrounds/obsidian-veil/`. |
 | `7-silver-wave.jpg` | `bg7.jpg` 5120×2880 | Gelombang hitam dengan garis silver (disediakan pengguna, 5 Nov 2026) | Tidak diketahui (metadata: Adobe Photoshop, 25 Jun 2026) | Sama seperti `6-black-arc.jpg`. |
 | `8-graphite-curve.jpg` | `bg8.png` 5120×3200 | Lengkung graphite mengilap (disediakan pengguna, 5 Nov 2026) | Tidak diketahui | Sama seperti `6-black-arc.jpg`. |
 

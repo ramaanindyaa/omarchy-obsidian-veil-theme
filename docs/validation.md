@@ -150,3 +150,13 @@ Snapshot diambil dari nilai live: `hyprctl getoption`, `hyprctl getprop`, `shell
 | Siklus nyata: `omarchy theme install <repo>` | Lulus | 8 wallpaper tersedia (Resend dibangun dari file asli lokal, tanpa unduhan), dekorasi & ikon aktif, `hyprctl configerrors` kosong, `validate.sh --installed` 0 gagal |
 | Hook post-boot dipicu oleh login sungguhan | Belum diuji | Tidak dilakukan logout/reboot; hook dijalankan manual dengan file yang sama |
 | Unduhan nyata dari CDN Resend lewat hook | Belum diuji | Pada perangkat ini file asli lokal tersedia, jadi tidak ada unduhan |
+
+## Publikasi (11 Nov 2026)
+
+| Pemeriksaan | Status | Catatan |
+| --- | --- | --- |
+| Wallpaper 6–8 (sumber tidak diketahui) dikeluarkan dari repo dan seluruh riwayat | Lulus | `git filter-branch`; tidak ada blob/path tersisa di `git rev-list --objects --all` |
+| Email commit diganti ke noreply GitHub | Lulus | Semua author/committer `…@users.noreply.github.com`; `user.email` repo diset ke noreply |
+| Repo lama dihapus dan dibuat ulang sebagai public | Lulus | Commit lama `6523438` → 404 di GitHub; backup riwayat lama di `~/.local/state/obsidian-veil/backups/git-pre-public-*.bundle` |
+| Tema terpasang disinkronkan ke riwayat baru | Lulus | Clone di-reset ke `origin/main`; 6–8 dibangun lokal ke folder wallpaper per-tema; `validate.sh --installed` 0 gagal; `hyprctl configerrors` kosong |
+| PR galeri tema omarchy.org | Terbuka | https://github.com/omacom/omarchy-site/pull/749 — `obsidian-veil.webp` 1200×675, 92 KB dari `preview.png` |

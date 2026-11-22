@@ -1,5 +1,7 @@
 # Validasi — 5 November 2026 (Omarchy 4.5.0-2)
 
+> Catatan (22 Nov 2026): `scripts/` dan `extras/` yang disebut di dokumen ini sudah dipindah ke repo terpisah [obsidian-veil-extras](https://github.com/ramaanindyaa/obsidian-veil-extras), karena tema Omarchy tidak boleh membawa kode.
+
 Bagian awal mencatat pengujian saat tema masih bernama `stealth-black` dan dipasang dari subfolder `theme/`. Hasil setelah restrukturisasi ke `obsidian-veil` (`omarchy theme install`) ada di bagian terakhir.
 
 Status: **LULUS** = diperiksa dan sesuai · **GAGAL** · **BELUM DIUJI** (dengan alasan).

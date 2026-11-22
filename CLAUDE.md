@@ -1,5 +1,7 @@
 # Obsidian Veil (palet Stealth Black) — Tema Omarchy Pribadi
 
+> Catatan (22 Nov 2026): `scripts/` dan `extras/` yang disebut di dokumen ini sudah dipindah ke repo terpisah [obsidian-veil-extras](https://github.com/ramaanindyaa/obsidian-veil-extras), karena tema Omarchy tidak boleh membawa kode.
+
 ## 1. Tujuan dan cara bekerja
 
 Buat dan terapkan tema Omarchy bernama `obsidian-veil` (palet "Stealth Black") pada perangkat pengguna. Hasil akhir harus berupa desktop hitam matte berlapis dengan aksen graphite–silver, konsisten untuk coding menggunakan VS Code, terminal, Claude Code, dan Codex.

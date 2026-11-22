@@ -1,5 +1,7 @@
 # Desain — Obsidian Veil (palet Stealth Black, Graphite & Silver)
 
+> Catatan (22 Nov 2026): `scripts/` dan `extras/` yang disebut di dokumen ini sudah dipindah ke repo terpisah [obsidian-veil-extras](https://github.com/ramaanindyaa/obsidian-veil-extras), karena tema Omarchy tidak boleh membawa kode.
+
 ## Hierarki lapisan
 
 | Lapisan | Hex | Dipakai pada |

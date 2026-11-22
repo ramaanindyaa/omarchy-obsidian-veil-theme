@@ -1,5 +1,7 @@
 # Tipografi — implementasi dan validasi (5 November 2026)
 
+> Catatan (22 Nov 2026): `scripts/` dan `extras/` yang disebut di dokumen ini sudah dipindah ke repo terpisah [obsidian-veil-extras](https://github.com/ramaanindyaa/obsidian-veil-extras), karena tema Omarchy tidak boleh membawa kode.
+
 Spesifikasi: bagian **Tipografi** di `CLAUDE.md`.
 
 ## Lingkungan
